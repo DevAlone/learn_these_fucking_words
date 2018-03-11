@@ -1,71 +1,101 @@
 package models
 
 import (
+	"../settings"
 	_ "github.com/mattn/go-sqlite3"
+	//"github.com/go-xorm/xorm"
+	"github.com/go-pg/pg"
+	"github.com/go-pg/pg/orm"
+	//"fmt"
 	//"github.com/go-xorm/xorm"
 	//"github.com/go-pg/pg"
 	//"fmt"
-	"github.com/go-xorm/xorm"
-	//"github.com/go-pg/pg"
+	//"reflect"
 )
 
 type User struct {
-	Id uint64  `xorm:"'id' pk autoincr"`
-	Username string `xorm:"varchar(32) unique index not null"`
+	Id uint64
+	Username string `sql:"type:varchar(32),unique,index,notnull"`
+	Memorizations []*Memorization
+}
 
-	// Memorizations []Memorization `xorm:"foreignkey:UserId"`
+type Language struct {
+	Id uint16
+	Code string `sql:"type:varchar(32),unique,index,notnull"`
+	Words []*Word
 }
 
 type Word struct {
-	Id uint32  `xorm:"'id' pk autoincr"`
-	Word string `xorm:"not null unique index"`
-
-	// Memorizations []Memorization `xorm:"foreignkey:WordId"`
+	Id uint32
+	Word string `sql:",notnull,unique,index"`
+	LanguageId uint16 `sql:",notnull,index"`
+	Language *Language
 }
 
 type Memorization struct {
-	Id uint64 `xorm:"'id' pk autoincr"`
-	UserId int64 `xorm:"not null unique('idx__user_id__word_id')"`
-	WordId int32 `xorm:"not null unique('idx__user_id__word_id')"`  // index:idx__user_id__word_id
-	MemorizationCoefficient float32 `xorm:"not null"`  // default=0.0
-	LastUpdateTimestamp int64 `xorm:"not null"`
+	Id uint64
+	UserId uint64 `sql:",notnull,unique:user_id__word_id"`
+	User *User
+	WordId uint32 `sql:",notnull,unique:user_id__word_id"`
+	Word *Word
+	MemorizationCoefficient float32 `sql:",notnull,default:0.0"`
+	LastUpdateTimestamp uint64 `sql:",notnull"`
 }
 
-var DB *xorm.Engine;
+var DB *pg.DB;
 
-func InitDb() {
-	engine, err := xorm.NewEngine("sqlite3", "./db.sqlite3")
+func InitDb() error {
+	DB = pg.Connect(&pg.Options{
+		Database: settings.DB_NAME,
+		User: settings.DB_USERNAME,
+		Password: settings.DB_PASSWORD,
+	})
 
-	DB = engine
-	PanicIfError(err)
-	//if err != nil {
-	//	panic("failed to connect database")
-	//}
-	err = engine.Sync2(new(User))
-	PanicIfError(err)
+	err := createSchema(DB)
 
-	err = engine.Sync2(new(Word))
-	PanicIfError(err)
-	err = engine.Sync2(new(Memorization))
-	PanicIfError(err)
-
-	// defer DB.Close()
-	engine.ShowSQL(true)
-
-	user := User{Username: "admin"}
-	ProcessDBResult(DB.Insert(user))
-	ProcessDBResult(DB.Insert(User{Username: "abmin"}))
-}
-
-func PanicIfError(err error) {
 	if err != nil {
-		panic(err)
+		return err
 	}
+
+	initUsers := []interface{}{
+		&User{Username: "admin"},
+		&User{Username: "abmin"}}
+
+	for _, model := range initUsers {
+		_, err := DB.Model(model).OnConflict("(username) DO NOTHING").Insert()
+		if err != nil {
+			return err
+		}
+	}
+
+	initLanguages := []interface{}{
+		&Language{Code: "eng"},
+		&Language{Code: "rus"}}
+
+	for _, model := range initLanguages {
+		_, err := DB.Model(model).OnConflict("(code) DO NOTHING").Insert()
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
-func ProcessDBResult(res interface{}, err error) interface{} {
-	if err != nil {
-		panic(err)
+func createSchema(db *pg.DB) error {
+	initTables := []interface{}{
+		&User{},
+		&Language{},
+		&Word{},
+		&Memorization{},}
+
+	for _, model := range initTables {
+		err := db.CreateTable(model, &orm.CreateTableOptions{
+			IfNotExists: true,
+			FKConstraints: true,})
+		if err != nil {
+			return err
+		}
 	}
-	return res
+	return nil
 }
