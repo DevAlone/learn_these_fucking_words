@@ -1,119 +1,16 @@
 package main
 
-import . "./models"
-
 import (
-	"./settings"
 	"./models"
+	"./views"
 	"github.com/gin-gonic/gin"
-	// "net/http"
-	//"io/ioutil"
-	"strings"
-	"errors"
-	"io/ioutil"
-	"net/http"
-	//"time"
+	"github.com/gin-contrib/static"
+	"github.com/appleboy/gin-jwt"
 	"time"
 )
 
-func index(context *gin.Context) {
-	var words []Word
-
-	err := DB.Model(&words).Select()
-	if err != nil {
-		panic(err)
-	}
-
-	var users []User
-
-	err = DB.Model(&users).Select()
-	if err != nil {
-		panic(err)
-	}
-
-	var languages[]Language
-
-	err = DB.Model(&languages).Select()
-	if err != nil {
-		panic(err)
-	}
-
-	var memorizations[]Memorization
-
-	err = DB.Model(&memorizations).Select()
-	if err != nil {
-		panic(err)
-	}
-
-	context.HTML(http.StatusOK, "index.html", gin.H{
-		"title": "test",
-		"words": words,
-		"users": users,
-		"languages": languages,
-		"memorizations": memorizations,
-	})
-}
-
-func _addWord(wordString string) error {
-	wordString = strings.ToLower(wordString)
-	wordString = strings.TrimSpace(wordString)
-
-	if len(wordString) == 0 {
-		return errors.New("wordString is too short")
-	} else if len(wordString) > settings.MAX_WORD_LENGTH {
-		return errors.New("wordString is too long")
-	}
-
-	// TODO: detect language and user
-	word := Word{Word: wordString, LanguageId: 1}
-
-	_, err := DB.Model(&word).Column("id").
-		Where("word = ?word").Where("language_id = ?language_id").
-			OnConflict("DO NOTHING").Returning("id").SelectOrInsert()
-
-	if err != nil {
-		return err
-	}
-
-	_, err = DB.Model(&Memorization{
-		UserId: 1,
-		WordId: word.Id,
-		MemorizationCoefficient: 0,
-		LastUpdateTimestamp: uint64(time.Now().Unix()),
-	}).OnConflict("(word_id, user_id) DO NOTHING").Insert()
-
-	return err
-}
-
-func addWord(context *gin.Context) {
-	_body, _ := ioutil.ReadAll(context.Request.Body)
-	body := string(_body)
-
-	words := strings.Split(body, " ")
-
-	var errorsList []string
-
-	for _, word := range words {
-		err := _addWord(word)
-		if err != nil {
-			// TODO: log error and return something else to user
-			errorsList = append(errorsList, err.Error())
-		}
-	}
-
-	if len(errorsList) > 0 {
-		context.JSON(
-			403,
-			gin.H{"status": "error", "error_message": "multiple errors happened(see errors)", "errors": errorsList},
-		)
-		return
-	}
-
-	context.JSON(200, gin.H{"status": "ok"})
-}
-
 func main() {
-	defer DB.Close()
+	defer models.DB.Close()
 
 	err := models.InitDb()
 	if err != nil {
@@ -121,9 +18,69 @@ func main() {
 	}
 
 	//gin.SetMode(gin.ReleaseMode)
-	server := gin.Default()
-	server.LoadHTMLGlob("templates/*")
-	server.GET("/", index)
-	server.POST("/api/words/", addWord)
-	server.Run()
+	router := gin.Default()
+	router.Use(static.Serve("/", static.LocalFile("./frontend/dist", true)))  // static.LocalFile("./frontend/dist/", false)))
+	//router.LoadHTMLGlob("templates/*")
+
+	// the jwt middleware
+	authMiddleware := &jwt.GinJWTMiddleware{
+		Realm:      "test zone",
+		Key:        []byte("secret key"),
+		Timeout:    time.Hour,
+		MaxRefresh: time.Hour,
+		Authenticator: func(userId string, password string, c *gin.Context) (string, bool) {
+			if (userId == "admin" && password == "admin") || (userId == "test" && password == "test") {
+				return userId, true
+			}
+
+			return userId, false
+		},
+		Authorizator: func(userId string, c *gin.Context) bool {
+			if userId == "admin" {
+				return true
+			}
+
+			return false
+		},
+		Unauthorized: func(c *gin.Context, code int, message string) {
+			c.JSON(code, gin.H {
+				"code":    code,
+				"message": message,
+			})
+		},
+		// TokenLookup is a string in the form of "<source>:<name>" that is used
+		// to extract token from the request.
+		// Optional. Default value "header:Authorization".
+		// Possible values:
+		// - "header:<name>"
+		// - "query:<name>"
+		// - "cookie:<name>"
+		TokenLookup: "header:Authorization",
+		// TokenLookup: "query:token",
+		// TokenLookup: "cookie:token",
+
+		// TokenHeadName is a string in the header. Default value is "Bearer"
+		TokenHeadName: "Bearer",
+
+		// TimeFunc provides the current time. You can override it to use another time value. This is useful for
+		// testing or if your server uses a different time zone than your tokens.
+		TimeFunc: time.Now,
+	}
+
+	router.POST("/api/v1/login", authMiddleware.LoginHandler)
+
+	api := router.Group("/api/v1")
+	api.Use(authMiddleware.MiddlewareFunc())
+	{
+		//api.GET("/refresh_token", authMiddleware.RefreshHandler)
+		api.GET("/words", views.GetWords)
+		api.POST("/words", views.AddWord)
+		//
+		api.GET("/users", views.GetUsers)
+		//
+		api.GET("/languages", views.GetLanguages)
+		api.GET("/user_memorizations/:username", views.GetUserMemorizations)
+	}
+
+	router.Run()
 }

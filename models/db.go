@@ -16,19 +16,21 @@ import (
 type User struct {
 	Id uint64
 	Username string `sql:"type:varchar(32),unique,index,notnull"`
-	Memorizations []*Memorization
+	Password string `json:"-"`
+
+	Memorizations []*Memorization `json:",omitempty"`
 }
 
 type Language struct {
-	Id uint16
+	Id uint16 `json:",omitempty"`
 	Code string `sql:"type:varchar(32),unique,index,notnull"`
-	Words []*Word
+	Words []*Word `json:",omitempty"`
 }
 
 type Word struct {
-	Id uint32
-	Word string `sql:",notnull,unique,index"`
-	LanguageId uint16 `sql:",notnull,index"`
+	Id uint32 `json:"id,omitempty"`
+	Word string `sql:",notnull,unique,index" json:",omitempty"`
+	LanguageId uint16 `sql:",notnull,index" json:",omitempty"`
 	Language *Language
 }
 
