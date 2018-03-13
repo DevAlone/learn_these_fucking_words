@@ -14,18 +14,8 @@
 }
 
 .error {
-  /*margin: 10px 0;*/
   background: #ff5f56;
   padding: 5px;
-}
-
-form {
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  /*flex-wrap: wrap;*/
-  /*justify-content: center;*/
-  /*align-items: stretch;*/
-  /*align-content: stretch;*/
 }
 
 button {

@@ -1,3 +1,16 @@
-<a routerLink="/login">login</a>
-<a routerLink="/index">index</a>
-<a routerLink="/words">words</a>
+<div class="mainMenu">
+  <a routerLink="/index">index</a>
+  <div *ngIf="api.authorized">
+    <a routerLink="/my/words">my words</a>
+    <a routerLink="/words">words</a>
+    <a routerLink="/debug">debug</a>
+  </div>
+  <div class="placeholder">
+
+  </div>
+  <div class="right">
+    <a routerLink="/login" *ngIf="!api.authorized">login</a>
+    <a routerLink="/register" *ngIf="!api.authorized">register</a>
+    <a routerLink="/login" (click)="logout()" *ngIf="api.authorized">logout</a>
+  </div>
+</div>

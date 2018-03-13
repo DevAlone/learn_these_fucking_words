@@ -1,0 +1,23 @@
+<h2>Add new one:</h2>
+<form>
+  <input [(ngModel)]="newWordLanguage" type="number" name="languageId" title="language id">
+  <input [(ngModel)]="newWord" type="text" name="word" title="word">
+  <button type="submit" class="button button-primary" (click)="addNewWord(); $event.preventDefault()">Login</button>
+</form>
+
+<table *ngIf="memorizations">
+  <thead>
+  <tr>
+    <td>Language</td>
+    <td>Word</td>
+    <td>How good you know this word</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of memorizations">
+    <td>{{ item.word.language.code }}</td>
+    <td>{{ item.word.word }}</td>
+    <td>{{ item.memorizationCoefficient }}</td>
+  </tr>
+  </tbody>
+</table>

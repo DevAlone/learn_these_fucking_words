@@ -4,12 +4,19 @@ import {RouterModule, Routes} from '@angular/router';
 import {StartPageComponent} from './start-page/start-page.component';
 import {LoginPageComponent} from './login-page/login-page.component';
 import {WordsPageComponent} from './words-page/words-page.component';
+import {DebugPageComponent} from "./debug-page/debug-page.component";
+import {MyWordsPageComponent} from "./my-words-page/my-words-page.component";
+import {RegisterPageComponent} from "./register-page/register-page.component";
+import {AuthPageComponent} from "./auth-page/auth-page.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   { path: 'index', component: StartPageComponent },
-  { path: 'login', component: LoginPageComponent },
+  { path: 'login', component: AuthPageComponent },
+  { path: 'register', component: AuthPageComponent },
   { path: 'words', component: WordsPageComponent },
+  { path: 'my/words', component: MyWordsPageComponent },
+  { path: 'debug', component: DebugPageComponent },
   // { path: 'channel/:id', component: ChannelDetailComponent },
 ];
 

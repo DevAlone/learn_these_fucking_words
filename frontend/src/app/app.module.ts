@@ -10,14 +10,14 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { WordsPageComponent } from './words-page/words-page.component';
 import {HttpClientModule} from '@angular/common/http';
 import {JwtModule} from '@auth0/angular-jwt';
-import {AuthService} from './auth.service';
 import {FormsModule} from '@angular/forms';
 import {ApiService} from './api.service';
-
-
-export function tokenGetter() {
-
-}
+import { MessagesComponent } from './messages/messages.component';
+import {MessageService} from "./message.service";
+import { DebugPageComponent } from './debug-page/debug-page.component';
+import { MyWordsPageComponent } from './my-words-page/my-words-page.component';
+import { RegisterPageComponent } from './register-page/register-page.component';
+import { AuthPageComponent } from './auth-page/auth-page.component';
 
 
 @NgModule({
@@ -26,11 +26,16 @@ export function tokenGetter() {
     StartPageComponent,
     MainMenuComponent,
     LoginPageComponent,
-    WordsPageComponent
+    WordsPageComponent,
+    MessagesComponent,
+    DebugPageComponent,
+    MyWordsPageComponent,
+    RegisterPageComponent,
+    AuthPageComponent
   ],
   imports: [
-    FormsModule,
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
     JwtModule.forRoot({
@@ -40,11 +45,11 @@ export function tokenGetter() {
         blacklistedRoutes: ['localhost:8080/login'],
         // throwNoTokenError: true,
       }
-    })
+    }),
   ],
   providers: [
-    AuthService,
     ApiService,
+    MessageService,
   ],
   bootstrap: [AppComponent]
 })

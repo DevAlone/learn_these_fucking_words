@@ -1,0 +1,35 @@
+<h2>Users</h2>
+<ul *ngIf="users">
+  <li *ngFor="let item of users">
+  {{ item.username }}
+  </li>
+</ul>
+
+<h2>Languages</h2>
+<ul *ngIf="languages">
+  <li *ngFor="let item of languages">
+  {{ item.code }}
+  </li>
+</ul>
+
+<h2>Words</h2>
+<table *ngIf="words">
+  <tbody>
+  <tr *ngFor="let word of words">
+    <td>{{ word.language.code }}</td>
+    <td>{{ word.word }}</td>
+  </tr>
+  </tbody>
+</table>
+
+<h2>Memorizations</h2>
+<table *ngIf="memorizations">
+  <tbody>
+  <tr *ngFor="let item of memorizations">
+    <td>{{ item.user.username }}</td>
+    <td>{{ item.word.word }}</td>
+    <td>{{ item.memorizationCoefficient }}</td>
+    <td>{{ item.lastUpdateTimestamp }}</td>
+  </tr>
+  </tbody>
+</table>

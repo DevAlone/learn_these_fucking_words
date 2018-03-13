@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {AuthService} from '../auth.service';
 import {Router} from '@angular/router';
 import {FormGroup} from '@angular/forms';
+import {ApiService} from "../api.service";
 
 @Component({
   selector: 'app-login-page',
@@ -15,7 +15,7 @@ export class LoginPageComponent implements OnInit {
   errorString: string;
 
   constructor(
-    private authService: AuthService,
+    private api: ApiService,
     private router: Router
   ) { }
 
@@ -23,10 +23,13 @@ export class LoginPageComponent implements OnInit {
   }
 
   login() {
-    this.authService.login(this.username, this.password).subscribe(() => {
+    this.api.login(this.username, this.password).subscribe((res) => {
       this.router.navigateByUrl('/');
     }, error => {
-      this.errorString = error.error.message;
+      if (error.hasOwnProperty('error'))
+        this.errorString = error.error.error_message;
+      else
+        this.errorString = error.message;
     });
   }
 }
