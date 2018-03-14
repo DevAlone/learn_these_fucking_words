@@ -3,16 +3,14 @@ package main
 //import . "./models"
 
 import (
-	"./models"
 	"./controllers"
 	"./middlewares"
-	"github.com/gin-gonic/gin"
+	"./models"
 	"github.com/gin-contrib/static"
+	"github.com/gin-gonic/gin"
 )
 
-
 func main() {
-	defer models.DB.Close()
 
 	err := models.InitDb()
 	if err != nil {
@@ -24,7 +22,7 @@ func main() {
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 
-	router.Use(static.Serve("/", static.LocalFile("./frontend/dist", true)))  // static.LocalFile("./frontend/dist/", false)))
+	router.Use(static.Serve("/", static.LocalFile("./frontend/dist", true))) // static.LocalFile("./frontend/dist/", false)))
 	//router.LoadHTMLGlob("templates/*")
 
 	// the jwt middleware
@@ -47,5 +45,15 @@ func main() {
 		api.GET("/my/memorizations", controllers.GetMyMemorizations)
 	}
 
-	router.Run()
+	err = router.Run()
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = models.DB.Close()
+
+	if err != nil {
+		panic(err)
+	}
 }

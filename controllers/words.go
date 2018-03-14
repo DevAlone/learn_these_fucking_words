@@ -3,16 +3,16 @@ package controllers
 import . "../models"
 
 import (
-	"../settings"
 	"../helpers"
-	"strings"
+	"../settings"
 	"errors"
-	"time"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
+	"time"
 )
 
-func addWord(languageId uint16, wordString string, userId uint64) (Word, error) {
+func addWord(languageId uint16, wordString string, userId uint64, c *gin.Context) (Word, error) {
 	wordString = strings.ToLower(wordString)
 	wordString = strings.TrimSpace(wordString)
 
@@ -22,7 +22,7 @@ func addWord(languageId uint16, wordString string, userId uint64) (Word, error) 
 		return Word{}, errors.New("wordString is too long")
 	}
 
-	// TODO: detect language and user
+	// TODO: detect language
 
 	word := Word{Word: wordString, LanguageId: languageId}
 
@@ -32,10 +32,11 @@ func addWord(languageId uint16, wordString string, userId uint64) (Word, error) 
 
 	if err != nil {
 		// TODO: do not return error to user
-		return Word{}, err
+		c.Error(err)
+		return Word{}, errors.New("some shit happened")
 	}
 
-	_, err = DB.Model(&Memorization {
+	_, err = DB.Model(&Memorization{
 		UserId:                  userId,
 		WordId:                  word.Id,
 		MemorizationCoefficient: 0,
@@ -55,7 +56,7 @@ func AddWord(context *gin.Context) {
 		return
 	}
 
-	word, err := addWord(word.LanguageId, word.Word, userId)
+	word, err := addWord(word.LanguageId, word.Word, userId, context)
 
 	if err != nil {
 		context.JSON(

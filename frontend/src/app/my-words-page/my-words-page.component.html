@@ -4,7 +4,6 @@
   <input [(ngModel)]="newWord" type="text" name="word" title="word">
   <button type="submit" class="button button-primary" (click)="addNewWord(); $event.preventDefault()">Login</button>
 </form>
-
 <table *ngIf="memorizations">
   <thead>
   <tr>
