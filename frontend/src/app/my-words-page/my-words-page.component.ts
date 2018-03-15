@@ -8,9 +8,17 @@ import {ApiService} from "../api.service";
 })
 export class MyWordsPageComponent implements OnInit {
   memorizations: any;
-  newWordLanguage: number = 1;
-  newWord: string = "";
-  constructor(private api: ApiService) { }
+  newWordLanguage: any;
+  newWord: string = ""; 
+  // TODO: load from server
+  languages: any[] = [
+  {code: 'eng'},
+  {code: 'rus'},
+  ];
+
+  constructor(private api: ApiService) {
+    this.newWordLanguage = this.languages[0];
+  }
 
   ngOnInit() {
     this.api.get('my/memorizations').subscribe(result => {
@@ -21,7 +29,12 @@ export class MyWordsPageComponent implements OnInit {
   addNewWord() {
     console.log(this.newWordLanguage);
     console.log(this.newWord);
-    this.api.post('words', {word: this.newWord, languageId: this.newWordLanguage}).subscribe(result => {
+    var data = {
+        word: this.newWord, 
+        languageCode: this.newWordLanguage.code
+    };
+
+    this.api.post('words', data).subscribe(result => {
       // TODO: push to the list
       console.log(result);
     });

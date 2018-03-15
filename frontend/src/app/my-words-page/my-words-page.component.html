@@ -1,8 +1,17 @@
 <h2>Add new one:</h2>
 <form>
-  <input [(ngModel)]="newWordLanguage" type="number" name="languageId" title="language id">
+    <select *ngIf="languages" name="example" [(ngModel)]="newWordLanguage">
+        <option 
+            *ngFor="let language of languages"
+            [ngValue]="language">
+        {{ language.code }}
+        </option>
+    </select>
+    <div *ngIf="!languages">
+        languages are loading...
+    </div>
   <input [(ngModel)]="newWord" type="text" name="word" title="word">
-  <button type="submit" class="button button-primary" (click)="addNewWord(); $event.preventDefault()">Login</button>
+  <button type="submit" class="button button-primary" (click)="addNewWord(); $event.preventDefault()">Add</button>
 </form>
 <table *ngIf="memorizations">
   <thead>

@@ -3,13 +3,13 @@ package middlewares
 import . "../models"
 
 import (
-	"golang.org/x/crypto/bcrypt"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"time"
-	"strings"
-	"github.com/go-pg/pg"
 	"github.com/appleboy/gin-jwt"
+	"github.com/gin-gonic/gin"
+	"github.com/go-pg/pg"
+	"golang.org/x/crypto/bcrypt"
+	"strings"
+	"time"
 )
 
 var AuthMiddleware *jwt.GinJWTMiddleware
@@ -52,7 +52,7 @@ func init() {
 			return resultString, true
 		},
 		Authorizator: func(userId string, c *gin.Context) bool {
-			return true;
+			return true
 			//if userId == "admin" {
 			//	return true
 			//}

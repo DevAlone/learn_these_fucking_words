@@ -5,20 +5,37 @@ import . "../models"
 import (
 	"../middlewares"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"regexp"
-	"golang.org/x/crypto/bcrypt"
 	"strings"
 )
 
-func Register(c *gin.Context) {
+type UserController struct{}
+
+func (this UserController) GetAll(context *gin.Context) {
+	var users []User
+
+	err := DB.Model(&users).Select()
+
+	if err != nil {
+		panic(err)
+	}
+
+	context.JSON(http.StatusOK, users)
+}
+
+func (this UserController) Register(c *gin.Context) {
 	var user struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
 	}
 
 	if err := c.ShouldBindJSON(&user); err != nil {
-		c.Error(err)
+		err = c.Error(err)
+		if err != nil {
+			panic(err)
+		}
 		c.JSON(http.StatusBadRequest, gin.H{"error_message": "Some error happened"})
 		return
 	}
@@ -41,7 +58,7 @@ func Register(c *gin.Context) {
 	count, err := DB.Model(&User{}).Where("LOWER(username) = ?", strings.ToLower(user.Username)).Count()
 
 	if err != nil {
-		c.Error(err)
+		_ = c.Error(err)
 		c.JSON(
 			http.StatusInternalServerError,
 			gin.H{"error_message": "some shit happened"})
@@ -56,7 +73,7 @@ func Register(c *gin.Context) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 
 	if err != nil {
-		panic(err);
+		panic(err)
 	}
 
 	_, err = DB.Model(&User{}).
@@ -71,7 +88,7 @@ func Register(c *gin.Context) {
 	token, time, err := middlewares.AuthMiddleware.TokenGenerator("1,admin")
 
 	if err != nil {
-		c.Error(err)
+		_ = c.Error(err)
 		c.JSON(
 			http.StatusInternalServerError,
 			gin.H{"error_message": "some shit happened, try to login with new login and password"})
@@ -79,8 +96,8 @@ func Register(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"code": 200,
+		"code":   200,
 		"expire": time,
-		"token": token,
+		"token":  token,
 	})
 }

@@ -7,7 +7,9 @@ import (
 	"net/http"
 )
 
-func GetLanguages(context *gin.Context) {
+type LanguageController struct{}
+
+func (this LanguageController) GetAll(context *gin.Context) {
 	var languages []Language
 
 	err := DB.Model(&languages).Select()
