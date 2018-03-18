@@ -13,7 +13,7 @@ import (
 
 type UserController struct{}
 
-func (this UserController) GetAll(context *gin.Context) {
+func (this *UserController) GetAll(context *gin.Context) {
 	var users []User
 
 	err := DB.Model(&users).Select()
@@ -25,7 +25,7 @@ func (this UserController) GetAll(context *gin.Context) {
 	context.JSON(http.StatusOK, users)
 }
 
-func (this UserController) Register(c *gin.Context) {
+func (this *UserController) Register(c *gin.Context) {
 	var user struct {
 		Username string `json:"username"`
 		Password string `json:"password"`

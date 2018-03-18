@@ -1,0 +1,24 @@
+<div class="horizontalWrapper">
+  <div class="verticalWrapper">
+    <div class="learningBlock floatingBlock" *ngIf="word">
+      <h3 class="word">{{ word.word }}</h3>
+      <h4>How good do you know this?</h4>
+      <div class="buttons">
+        <button (click)="sendKnowledge(0)">Don't know at all</button>
+        <button (click)="sendKnowledge(1)">I'm not sure</button>
+        <button (click)="sendKnowledge(2)">Not so good</button>
+        <button (click)="sendKnowledge(3)">Good</button>
+        <button (click)="sendKnowledge(4)">Excellent</button>
+      </div>
+      <h5 *ngIf="sent">You can change your vote</h5>
+    </div>
+    <!--<div>-->
+      <div class="wordInfo floatingBlock" *ngIf="sent">
+        some info about word
+      </div>
+    <!--</div>-->
+  </div>
+  <button class="nextWordButton" (click)="nextWord()">
+    next word
+  </button>
+</div>

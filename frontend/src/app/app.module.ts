@@ -18,6 +18,7 @@ import { DebugPageComponent } from './debug-page/debug-page.component';
 import { MyWordsPageComponent } from './my-words-page/my-words-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { AuthPageComponent } from './auth-page/auth-page.component';
+import { LearningPageComponent } from './learning-page/learning-page.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { AuthPageComponent } from './auth-page/auth-page.component';
     DebugPageComponent,
     MyWordsPageComponent,
     RegisterPageComponent,
-    AuthPageComponent
+    AuthPageComponent,
+    LearningPageComponent
   ],
   imports: [
     BrowserModule,

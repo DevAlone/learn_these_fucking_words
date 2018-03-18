@@ -9,7 +9,7 @@ import (
 
 type LanguageController struct{}
 
-func (this LanguageController) GetAll(context *gin.Context) {
+func (this *LanguageController) GetAll(context *gin.Context) {
 	var languages []Language
 
 	err := DB.Model(&languages).Select()

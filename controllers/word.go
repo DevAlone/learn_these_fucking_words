@@ -16,7 +16,7 @@ import (
 
 type WordController struct{}
 
-func (this WordController) Add(context *gin.Context) {
+func (this *WordController) Add(context *gin.Context) {
 	userId, _ := helpers.JWTGetCurrentUser(context)
 
 	var userWord struct {
@@ -123,7 +123,7 @@ func addWord(languageCode string, wordString string, userId uint64, c *gin.Conte
 	return &word, nil
 }
 
-func (this WordController) GetAll(context *gin.Context) {
+func (this *WordController) GetAll(context *gin.Context) {
 	var words []Word
 
 	err := DB.Model(&words).

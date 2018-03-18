@@ -11,7 +11,6 @@ import (
 )
 
 func main() {
-
 	err := models.InitDb()
 	if err != nil {
 		panic(err)
@@ -31,6 +30,7 @@ func main() {
 	userController := controllers.UserController{}
 	languageController := controllers.LanguageController{}
 	memorizationController := controllers.MemorizationController{}
+	learningController := controllers.LearningController{}
 
 	router.POST("/api/v1/login", middlewares.AuthMiddleware.LoginHandler)
 	router.POST("/api/v1/register", userController.Register)
@@ -48,6 +48,9 @@ func main() {
 		api.GET("/memorizations", memorizationController.GetAll)
 
 		api.GET("/my/memorizations", memorizationController.GetMyMemorizations)
+		api.PATCH("/my/memorizations/:word_id", memorizationController.UpdateMyMemorization)
+
+		api.GET("/learning/word", learningController.GetWord)
 	}
 
 	err = router.Run()

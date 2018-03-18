@@ -8,6 +8,7 @@ import {DebugPageComponent} from "./debug-page/debug-page.component";
 import {MyWordsPageComponent} from "./my-words-page/my-words-page.component";
 import {RegisterPageComponent} from "./register-page/register-page.component";
 import {AuthPageComponent} from "./auth-page/auth-page.component";
+import { LearningPageComponent } from "./learning-page/learning-page.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'index', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'register', component: AuthPageComponent },
   { path: 'words', component: WordsPageComponent },
   { path: 'my/words', component: MyWordsPageComponent },
+  { path: 'learning', component: LearningPageComponent },
   { path: 'debug', component: DebugPageComponent },
   // { path: 'channel/:id', component: ChannelDetailComponent },
 ];

@@ -9,15 +9,16 @@ import {MessageService} from "./message.service";
 
 @Injectable()
 export class ApiService {
-  public authorized: boolean = false;
+  public authorized = false;
 
   constructor(
     private http: HttpClient,
     private messageService: MessageService,
     private router: Router,
   ) {
-    if (localStorage.getItem('access_token'))
+    if (localStorage.getItem('access_token')) {
       this.authorized = true;
+    }
   }
 
   public login(username: string, password: string): Observable<void> {
@@ -44,30 +45,52 @@ export class ApiService {
   }
 
   public get(url: string): Observable<any> {
-    if (!url.startsWith('/')) {
-      url = '/' + url;
-    }
-
-    url = 'http://localhost:8080/api/v1' + url;
-
-    // return this.http.get(url, ApiConfig.HTTP_OPTIONS).pipe(
-    return this.http.get(url).pipe(
-      // tap(_ => console.log("")),
-      catchError(this.handleError<any[]>('get', []))
-    );
+    return this.request('get', url);
   }
 
   public post(url: string, data: any): Observable<any> {
-    if (!url.startsWith('/')) {
-      url = '/' + url;
-    }
+    return this.request('post', url, data);
+  }
 
-    url = 'http://localhost:8080/api/v1' + url;
+  public patch(url: string, data: any): Observable<any> {
+    return this.request('patch', url, data);
+  }
 
-    return this.http.post(url, data).catch(error => {
-      this.handleError<any[]>('post', []);
-      return Observable.throw(error);
+  public request(requestMethod: string, url: string, data?: any): Observable<any> {
+    return Observable.create(observer => {
+      if (!url.startsWith('/')) {
+        url = '/' + url;
+      }
+
+      url = 'http://localhost:8080/api/v1' + url;
+
+      return this.http[requestMethod](url, data).subscribe(result => {
+        observer.next(result);
+        observer.complete();
+      }, error => {
+          if (error.status === 401) {
+            localStorage.removeItem('access_token');
+            this.authorized = false;
+            this.router.navigateByUrl('/login');
+          }
+
+          this.messageService.error(error.error.error_message);
+
+          observer.error(error);
+        }
+      });
     });
+
+    // if (!url.startsWith('/')) {
+    //   url = '/' + url;
+    // }
+    //
+    // url = 'http://localhost:8080/api/v1' + url;
+    //
+    // return this.http[requestMethod](url, data).catch(error => {
+    //   this.handleError<any[]>(requestMethod, []);
+    //   return Observable.throw(error);
+    // });
 
     // this.messageService.error("aaaaaaaaa");
     // return this.http.post(url, data).pipe(
@@ -75,25 +98,19 @@ export class ApiService {
     //   catchError(this.handleError<any[]>('post', []))
     // );
   }
-
-  private handleError<T> (operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      if (error.status == 401) {
-        localStorage.removeItem('access_token');
-        this.authorized = false;
-        this.router.navigateByUrl('/login');
-      }
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      // this.log(`${operation} failed: ${error.message}`);
-
-      this.messageService.error(error.error.error_message);
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
+  //
+  // private handleError<T> (operation = 'operation', result?: T) {
+  //   this.messageService.error('shit happens');
+  //   return (error: any): Observable<T> => {
+  //     this.messageService.error('shit happens1');
+  //
+  //     // TODO: send the error to remote logging infrastructure
+  //     // console.error(error); // log to console instead
+  //     // TODO: better job of transforming error for user consumption
+  //     // this.log(`${operation} failed: ${error.message}`);
+  //
+  //     // Let the app keep running by returning an empty result.
+  //     return of(result as T);
+  //   };
+  // }
 }
