@@ -1,9 +1,11 @@
 package controllers
 
 import . "../models"
+import . "../config"
 
 import (
 	"../middlewares"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
@@ -29,6 +31,7 @@ func (this *UserController) Register(c *gin.Context) {
 	var user struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
+		Token    string `json:"token"`
 	}
 
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -37,6 +40,11 @@ func (this *UserController) Register(c *gin.Context) {
 			panic(err)
 		}
 		c.JSON(http.StatusBadRequest, gin.H{"error_message": "Some error happened"})
+		return
+	}
+
+	if user.Token != Settings["register_token"] {
+		c.JSON(http.StatusBadRequest, gin.H{"error_message": "you don't have a token, don't you?"})
 		return
 	}
 
@@ -76,16 +84,23 @@ func (this *UserController) Register(c *gin.Context) {
 		panic(err)
 	}
 
-	_, err = DB.Model(&User{}).
-		Exec(`
-			INSERT INTO users (username, password) 
-			VALUES (?, ?)`, user.Username, hashedPassword)
-
-	if err != nil {
-		panic(err)
+	resultUser := User{
+		Username: user.Username,
+		Password: hashedPassword,
 	}
 
-	token, time, err := middlewares.AuthMiddleware.TokenGenerator("1,admin")
+	_, err = DB.Model(&resultUser).
+		Returning("id").
+		Insert()
+
+	if err != nil {
+		c.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error_message": "some shit happened"})
+		return
+	}
+
+	token := fmt.Sprintf("%d,%s", resultUser.Id, resultUser.Username)
+	token, time, err := middlewares.AuthMiddleware.TokenGenerator(token)
 
 	if err != nil {
 		_ = c.Error(err)

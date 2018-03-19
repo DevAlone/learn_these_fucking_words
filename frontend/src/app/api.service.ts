@@ -35,8 +35,8 @@ export class ApiService {
     this.authorized = false;
   }
 
-  public register(username: string, password: string): Observable<void> {
-    return this.post('register', {username: username, password: password}).map(res => {
+  public register(username: string, password: string, token: string): Observable<void> {
+    return this.post('register', {username: username, password: password, token: token}).map(res => {
       if (res.hasOwnProperty('token')) {
         localStorage.setItem('access_token', res.token);
         this.authorized = true;
@@ -77,8 +77,7 @@ export class ApiService {
           this.messageService.error(error.error.error_message);
 
           observer.error(error);
-        }
-      });
+        });
     });
 
     // if (!url.startsWith('/')) {

@@ -9,11 +9,11 @@ import {ApiService} from "../api.service";
 export class MyWordsPageComponent implements OnInit {
   memorizations: any;
   newWordLanguage: any;
-  newWord: string = ""; 
+  newWord = '';
   // TODO: load from server
   languages: any[] = [
-  {code: 'eng'},
-  {code: 'rus'},
+    {code: 'eng'},
+    {code: 'rus'},
   ];
 
   constructor(private api: ApiService) {
@@ -29,14 +29,16 @@ export class MyWordsPageComponent implements OnInit {
   addNewWord() {
     console.log(this.newWordLanguage);
     console.log(this.newWord);
-    var data = {
-        word: this.newWord, 
+    const data = {
+        word: this.newWord,
         languageCode: this.newWordLanguage.code
     };
 
-    this.api.post('words', data).subscribe(result => {
-      // TODO: push to the list
-      console.log(result);
+    this.api.post('my/words', data).subscribe(result => {
+        if (result.wasAdded) {
+            this.memorizations.push(result.data)
+        }
+        console.log(result);
     });
   }
 }

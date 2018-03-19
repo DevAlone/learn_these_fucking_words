@@ -10,6 +10,7 @@ import {ApiService} from "../api.service";
 export class RegisterPageComponent implements OnInit {
   username: string;
   password: string;
+  token: string;
   errorString: string;
 
   constructor(
@@ -21,7 +22,7 @@ export class RegisterPageComponent implements OnInit {
   }
 
   register() {
-    this.api.register(this.username, this.password).subscribe((res) => {
+    this.api.register(this.username, this.password, this.token).subscribe((res) => {
       console.log('ok');
       this.router.navigateByUrl('/');
     }, error => {

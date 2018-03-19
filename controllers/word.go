@@ -34,7 +34,7 @@ func (this *WordController) Add(context *gin.Context) {
 		return
 	}
 
-	word, err := addWord(userWord.LanguageCode, userWord.Word, userId, context)
+	memorization, wasAdded, err := addWord(userWord.LanguageCode, userWord.Word, userId, context)
 
 	if err != nil {
 		context.JSON(
@@ -44,17 +44,20 @@ func (this *WordController) Add(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, *word)
+	context.JSON(http.StatusOK, gin.H{
+		"data":     *memorization,
+		"wasAdded": wasAdded,
+	})
 }
 
-func addWord(languageCode string, wordString string, userId uint64, c *gin.Context) (*Word, error) {
+func addWord(languageCode string, wordString string, userId uint64, c *gin.Context) (*Memorization, bool, error) {
 	wordString = strings.ToLower(wordString)
 	wordString = strings.TrimSpace(wordString)
 
 	if len(wordString) == 0 {
-		return nil, errors.New("wordString is too short")
+		return nil, false, errors.New("wordString is too short")
 	} else if len(wordString) > settings.MAX_WORD_LENGTH {
-		return nil, errors.New("wordString is too long")
+		return nil, false, errors.New("wordString is too long")
 	}
 
 	// TODO: detect language
@@ -67,12 +70,12 @@ func addWord(languageCode string, wordString string, userId uint64, c *gin.Conte
 	err := DB.Model(&language).Where("code = ?", languageCode).Select()
 
 	if err == pg.ErrNoRows {
-		return nil, errors.New("language does not exist")
+		return nil, false, errors.New("language does not exist")
 	}
 
 	if err != nil {
 		_ = c.Error(err)
-		return nil, errors.New("some shit happened")
+		return nil, false, errors.New("some shit happened")
 	}
 
 	word := Word{Word: wordString, LanguageId: language.Id}
@@ -90,7 +93,7 @@ func addWord(languageCode string, wordString string, userId uint64, c *gin.Conte
 
 		if err != nil {
 			_ = c.Error(err)
-			return nil, errors.New("some shit happened")
+			return nil, false, errors.New("some shit happened")
 		}
 
 		// TODO: select language
@@ -101,26 +104,34 @@ func addWord(languageCode string, wordString string, userId uint64, c *gin.Conte
 
 		if err != nil {
 			_ = c.Error(err)
-			return nil, errors.New("some shit happened")
+			return nil, false, errors.New("some shit happened")
 		}
 	} else if err != nil {
 		_ = c.Error(err)
-		return nil, errors.New("some shit happened")
+		return nil, false, errors.New("some shit happened")
 	}
 
-	_, err = DB.Model(&Memorization{
+	memorization := Memorization{
 		UserId:                  userId,
 		WordId:                  word.Id,
 		MemorizationCoefficient: 0,
 		LastUpdateTimestamp:     uint64(time.Now().Unix()),
-	}).OnConflict("(word_id, user_id) DO NOTHING").Insert()
+	}
+	result, err := DB.Model(&memorization).
+		OnConflict("(word_id, user_id) DO NOTHING").
+		Returning("memorization_coefficient", "last_update_timestamp").
+		Insert()
+
+	wasAdded := result.RowsAffected() > 0
+
+	memorization.Word = &word
 
 	if err != nil {
 		_ = c.Error(err)
-		return nil, errors.New("some shit happened")
+		return nil, false, errors.New("some shit happened")
 	}
 
-	return &word, nil
+	return &memorization, wasAdded, nil
 }
 
 func (this *WordController) GetAll(context *gin.Context) {

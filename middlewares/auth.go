@@ -20,30 +20,24 @@ func init() {
 		Key:        []byte("secret key"),
 		Timeout:    time.Hour,
 		MaxRefresh: time.Hour,
-		Authenticator: func(userId string, password string, c *gin.Context) (string, bool) {
+		Authenticator: func(username string, password string, c *gin.Context) (string, bool) {
 			var resultString string
 
 			user := User{}
 
-			userId = strings.ToLower(userId)
+			username = strings.ToLower(username)
 
-			err := DB.Model(&user).Where("LOWER(username) = ?", userId).Select()
+			err := DB.Model(&user).
+				Where("LOWER(username) = ?", username).
+				Select()
 
 			if err == pg.ErrNoRows {
-				fmt.Println("no such user")
 				return resultString, false
 			}
-
-			//hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-			//
-			//if err != nil {
-			//	panic(err);
-			//}
 
 			err = bcrypt.CompareHashAndPassword(user.Password, []byte(password))
 
 			if err != nil {
-				fmt.Println("wrong password")
 				return resultString, false
 			}
 

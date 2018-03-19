@@ -40,7 +40,7 @@ func main() {
 	{
 		api.GET("/refresh_token", middlewares.AuthMiddleware.RefreshHandler)
 		api.GET("/words", wordController.GetAll)
-		api.POST("/words", wordController.Add)
+		api.POST("/my/words", wordController.Add)
 		//
 		api.GET("/users", userController.GetAll)
 		//
