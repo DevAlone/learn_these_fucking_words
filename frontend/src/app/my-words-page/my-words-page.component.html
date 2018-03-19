@@ -10,8 +10,8 @@
     <div *ngIf="!languages">
         languages are loading...
     </div>
-  <input [(ngModel)]="newWord" type="text" name="word" title="word">
-  <button type="submit" class="button button-primary" (click)="addNewWord(); $event.preventDefault()">Add</button>
+  <input #wordInput [(ngModel)]="newWord" id="wordInput" type="text" name="word" title="word">
+  <button type="submit" class="button button-primary" (click)="addNewWord(); wordInput.value = ''; $event.preventDefault()">Add</button>
 </form>
 <table *ngIf="memorizations">
   <thead>

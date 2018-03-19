@@ -31,6 +31,7 @@ func main() {
 	languageController := controllers.LanguageController{}
 	memorizationController := controllers.MemorizationController{}
 	learningController := controllers.LearningController{}
+	imageController := controllers.ImageController{}
 
 	router.POST("/api/v1/login", middlewares.AuthMiddleware.LoginHandler)
 	router.POST("/api/v1/register", userController.Register)
@@ -51,6 +52,8 @@ func main() {
 		api.PATCH("/my/memorizations/:word_id", memorizationController.UpdateMyMemorization)
 
 		api.GET("/learning/word", learningController.GetWord)
+
+		api.GET("/images/:search_text", imageController.Get)
 	}
 
 	err = router.Run()
