@@ -1,24 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
-h1, h2, h3, h4, h5 {
-  padding: 10px 0;
-  margin: 0;
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    padding: 10px 0;
+    margin: 0;
 }
 
 table {
-  width: 100%;
+    width: 100%;
+}
+
+a,
+button {
+    outline: none;
 }
 
 .floatingBlock {
-  padding: 10px 20px;
-  border: 1px solid #eee;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  /*transition: all 0.3s cubic-bezier(.25,.8,.25,1);*/
+    display: block;
+    padding: 10px 20px;
+    border: 1px solid #eee;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    margin-top: 2px;
+    margin-left: 2px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    /*transition: all 0.3s cubic-bezier(.25,.8,.25,1);*/
 }

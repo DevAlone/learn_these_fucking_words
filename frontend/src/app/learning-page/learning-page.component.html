@@ -1,51 +1,51 @@
 <div class="horizontalWrapper">
-  <div class="verticalWrapper">
-    <div class="learningBlock floatingBlock" *ngIf="word">
-      <h3 class="word">{{ word.word }}</h3>
-      <h4>How good do you know this?</h4>
-      <div class="buttons">
-        <button (click)="sendKnowledge(0)">Don't know at all</button>
-        <button (click)="sendKnowledge(1)">I'm not sure</button>
-        <button (click)="sendKnowledge(2)">Not so good</button>
-        <button (click)="sendKnowledge(3)">Good</button>
-        <button (click)="sendKnowledge(4)">Excellent</button>
-      </div>
-      <h5 *ngIf="sent">You can change your vote</h5>
+    <div class="verticalWrapper">
+        <div class="learningBlock floatingBlock" *ngIf="word">
+            <h3 class="word">{{ word.word }}</h3>
+            <h4>How good do you know this?</h4>
+            <div class="buttons">
+                <button (click)="sendKnowledge(0)">Don't know at all</button>
+                <button (click)="sendKnowledge(1)">I'm not sure</button>
+                <button (click)="sendKnowledge(2)">Not so good</button>
+                <button (click)="sendKnowledge(3)">Good</button>
+                <button (click)="sendKnowledge(4)">Excellent</button>
+            </div>
+            <h5 *ngIf="sent">You can change your vote</h5>
+        </div>
+        <!--<div>-->
+        <div class="wordInfo" *ngIf="sent">
+            <h3>some info about word:</h3>
+            <div class="infoBlock" *ngIf="!wordInformations || wordInformations.length <= 0">
+                There is no any :(
+            </div>
+            <div class="infoBlock floatingBlock" *ngFor="let info of wordInformations">
+                <div class="word">
+                    <span>{{ info.headword }}</span>
+                    <span class="partOfSpeech">(part of speech: <span>{{ info.part_of_speech }}</span>)</span>
+                </div>
+                <div class="pronunciationsBlock" *ngIf="info.pronunciations">
+                    <div class="pronunciationBlock" *ngFor="let pronunciation of info.pronunciations">
+                        {{ pronunciation| json }}
+                    </div>
+                </div>
+                <div class="senseBlock" *ngFor="let sense of info.senses">
+                    <pre>{{ sense|json }}</pre>
+                    <div class="examplesBlock" *ngIf="sense.examples">
+                        <p *ngFor="let example of sense.examples">
+                            {{ example|json }}
+                        </p>
+                    </div>
+                    <div class="grammaticalExamplesBlock" *ngIf="sense.gramatical_examples">
+                        <p *ngFor="let grammaticalExample of sense.gramatical_examples">
+                            {{ grammaticalExample| json }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--</div>-->
     </div>
-    <!--<div>-->
-      <div class="wordInfo floatingBlock" *ngIf="sent">
-        <h3>some info about word:</h3>
-        <div class="infoBlock" *ngIf="!wordInformations || wordInformations.length <= 0">
-            There is no any :(
-        </div>
-        <div class="infoBlock floatingBlock" *ngFor="let info of wordInformations">
-            <div class="word">
-                <span>{{ info.headword }}</span>
-                <span class="partOfSpeech">(part of speech: <span>{{ info.part_of_speech }}</span>)</span>
-            </div>
-            <div class="pronunciationsBlock" *ngIf="info.pronunciations">
-                <div class="pronunciationBlock" *ngFor="let pronunciation of info.pronunciations">
-                    {{ pronunciation| json }}
-                </div>
-            </div>
-            <div class="senseBlock" *ngFor="let sense of info.senses">
-                <pre>{{ sense|json }}</pre>
-                <div class="examplesBlock" *ngIf="sense.examples">
-                    <p *ngFor="let example of sense.examples">
-                        {{ example|json }}
-                    </p>
-                </div>
-                <div class="grammaticalExamplesBlock" *ngIf="sense.gramatical_examples">
-                    <p *ngFor="let grammaticalExample of sense.gramatical_examples">
-                        {{ grammaticalExample| json }}
-                    </p>
-                </div>
-            </div>
-        </div>
-      </div>
-    <!--</div>-->
-  </div>
-  <button class="nextWordButton" (click)="nextWord()">
+    <button class="nextWordButton floatingBlock" (click)="nextWord()">
     next word
   </button>
 </div>
