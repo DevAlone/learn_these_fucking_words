@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../api.service';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
+import { Word } from '../models/word';
 
 @Component({
   selector: 'app-learning-page',
@@ -10,9 +11,7 @@ import {Router} from '@angular/router';
 })
 export class LearningPageComponent implements OnInit {
   memorization: any;
-  word: any;
-  wordInformations: any[];
-  images: any[];
+  word: Word;
   sent = false;
 
   constructor(
@@ -22,7 +21,7 @@ export class LearningPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-      this.nextWord();
+    this.nextWord();
   }
 
   sendKnowledge(value: number) {
@@ -31,17 +30,6 @@ export class LearningPageComponent implements OnInit {
     const data = {
       memorizationCoefficient: this.memorization.memorizationCoefficient
     };
-
-    if (!this.sent) {
-        var url = `http://api.pearson.com/v2/dictionaries/entries?headword=${this.word.word}&limit=10`;
-        this.http.get<any>(url).subscribe(result => {
-            this.wordInformations = result.results;
-        });
-        this.api.get('images/' + this.word.word).subscribe(result => {
-            console.log(result);
-            this.images = result.hits;
-        });
-    }
 
     this.api.patch('my/memorizations/' + this.word.id, data).subscribe(result => {
       this.memorization = result.data;

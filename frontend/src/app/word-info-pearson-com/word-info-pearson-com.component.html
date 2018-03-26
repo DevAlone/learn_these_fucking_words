@@ -1,0 +1,38 @@
+<div class="info" *ngIf="!wordInformations || wordInformations.length <= 0">
+    There is no any :(
+</div>
+<div class="info floatingBlock" *ngFor="let info of wordInformations">
+    <div class="word">
+        <span>{{ info.headword }}</span>
+        <span class="partOfSpeech" title="part of speech">({{ info.part_of_speech }})</span>
+    </div>
+    <div class="pronunciations" *ngIf="info.pronunciations">
+        <div class="pronunciation" *ngFor="let pronunciation of info.pronunciations">
+            pronunciation {{ pronunciation }}
+        </div>
+    </div>
+    <div class="sense" *ngFor="let sense of info.senses">
+        sense
+        <div class="defenitions" *ngIf="sense.definition">
+            <div class="definition" *ngFor="let definition of sense.definition">
+                {{definition}}
+            </div>
+        </div>
+        <div class="examples" *ngIf="sense.examples">
+            <p *ngFor="let example of sense.examples">
+                {{ example|json }}
+            </p>
+        </div>
+        <div class="grammaticalExamples" *ngIf="sense.gramatical_examples">
+            <p *ngFor="let grammaticalExample of sense.gramatical_examples">
+                {{ grammaticalExample| json }}
+            </p>
+        </div>
+        <div class="crossReferences" *ngIf="sense.cross_references">
+            crossReferences are here
+        </div>
+    </div>
+    <pre>
+    {{ info|json }}
+    </pre>
+</div>

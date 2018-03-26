@@ -4,12 +4,13 @@ import . "../models"
 
 import (
 	"fmt"
+	"strings"
+	"time"
+
 	"github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"
 	"golang.org/x/crypto/bcrypt"
-	"strings"
-	"time"
 )
 
 var AuthMiddleware *jwt.GinJWTMiddleware
@@ -18,8 +19,8 @@ func init() {
 	AuthMiddleware = &jwt.GinJWTMiddleware{
 		Realm:      "test zone",
 		Key:        []byte("secret key"),
-		Timeout:    time.Hour,
-		MaxRefresh: time.Hour,
+		Timeout:    time.Duration(24*365) * time.Hour,
+		MaxRefresh: 0,
 		Authenticator: func(username string, password string, c *gin.Context) (string, bool) {
 			var resultString string
 

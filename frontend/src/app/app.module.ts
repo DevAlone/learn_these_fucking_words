@@ -19,6 +19,8 @@ import { MyWordsPageComponent } from './my-words-page/my-words-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { AuthPageComponent } from './auth-page/auth-page.component';
 import { LearningPageComponent } from './learning-page/learning-page.component';
+import { WordInfoComponent } from './word-info/word-info.component';
+import { WordInfoPearsonComComponent } from './word-info-pearson-com/word-info-pearson-com.component';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { LearningPageComponent } from './learning-page/learning-page.component';
     MyWordsPageComponent,
     RegisterPageComponent,
     AuthPageComponent,
-    LearningPageComponent
+    LearningPageComponent,
+    WordInfoComponent,
+    WordInfoPearsonComComponent
   ],
   imports: [
     BrowserModule,

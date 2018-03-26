@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"encoding/json"
-	"github.com/gin-gonic/gin"
-	"io/ioutil"
 	"net/http"
+
+	. "../config"
+	"../helpers"
+	"github.com/gin-gonic/gin"
 )
 
 type ImageController struct{}
@@ -12,32 +13,19 @@ type ImageController struct{}
 func (this *ImageController) Get(c *gin.Context) {
 	var searchText = c.Param("search_text")
 
-	url := "https://pixabay.com/api/?key=YOUR_KEY_GOES_HERE&q=" + searchText
+	url := "https://pixabay.com/api/?key=" + Settings["pixabay_api_key"].(string) + "&q=" + searchText
 
-	resp, err := http.Get(url)
+	resp, err := helpers.GetJson(url)
 
 	if err != nil {
-		c.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error_message": "some shit happened"})
+		_ = c.Error(err)
+		c.JSON(http.StatusBadGateway, gin.H{"error_message": "some shit happened"})
 		return
 	}
 
-	defer resp.Body.Close()
+	data := resp.(map[string]interface{})["hits"]
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		c.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error_message": "some shit happened"})
-		return
-	}
-
-	var jsonResult = make(map[string]interface{})
-
-	if err := json.Unmarshal(body, &jsonResult); err != nil {
-		c.Error(err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error_message": "some shit happened"})
-		return
-	}
-
-	c.JSON(http.StatusOK, body)
+	c.JSON(http.StatusOK, gin.H{
+		"data": data,
+	})
 }

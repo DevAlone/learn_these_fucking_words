@@ -1,0 +1,17 @@
+.info {
+    margin-bottom: 10px;
+}
+
+.word {
+    border-bottom: 2px dashed #4f82d6;
+    padding: 5px 15px;
+}
+
+.info .partOfSpeech {
+    color: #888;
+}
+
+pre {
+    /* TODO: remove it */
+    background: aquamarine;
+}

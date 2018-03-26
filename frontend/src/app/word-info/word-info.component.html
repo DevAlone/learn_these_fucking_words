@@ -1,0 +1,5 @@
+<div class="imagesBlock" *ngIf="images">
+    <img *ngFor="let image of images" src="{{ image.previewURL }}">
+</div>
+<h3>some info about word:</h3>
+<app-word-info-pearson-com [word]="word"></app-word-info-pearson-com>

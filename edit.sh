@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-export GOPATH=`pwd`
+export GOPATH=/home/user/go:`pwd`
 nvim "$@"
 

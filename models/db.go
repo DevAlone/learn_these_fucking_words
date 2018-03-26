@@ -1,12 +1,14 @@
 package models
 
+import . "../config"
+
 import (
-	"../settings"
 	"fmt"
+	"time"
+
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
 	_ "github.com/mattn/go-sqlite3"
-	"time"
 )
 
 type User struct {
@@ -45,10 +47,11 @@ type Memorization struct {
 var DB *pg.DB
 
 func InitDb() error {
+	dbConfig := Settings["database"].(map[string]interface{})
 	DB = pg.Connect(&pg.Options{
-		Database: settings.DB_NAME,
-		User:     settings.DB_USERNAME,
-		Password: settings.DB_PASSWORD,
+		Database: dbConfig["name"].(string),
+		User:     dbConfig["username"].(string),
+		Password: dbConfig["password"].(string),
 	})
 
 	DB.OnQueryProcessed(func(event *pg.QueryProcessedEvent) {

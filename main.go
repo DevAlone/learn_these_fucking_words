@@ -42,6 +42,7 @@ func main() {
 		api.GET("/refresh_token", middlewares.AuthMiddleware.RefreshHandler)
 		api.GET("/words", wordController.GetAll)
 		api.POST("/my/words", wordController.Add)
+		api.GET("/word_info_items/:provider_name/:word", wordController.GetInfoByProvider)
 		//
 		api.GET("/users", userController.GetAll)
 		//

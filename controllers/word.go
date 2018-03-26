@@ -1,17 +1,18 @@
 package controllers
 
 import . "../models"
+import . "../config"
 
 import (
-	"../helpers"
-	"../settings"
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/go-pg/pg"
 	"net/http"
 	"strings"
 	"time"
+
+	"../helpers"
+	"github.com/gin-gonic/gin"
+	"github.com/go-pg/pg"
 )
 
 type WordController struct{}
@@ -56,7 +57,7 @@ func addWord(languageCode string, wordString string, userId uint64, c *gin.Conte
 
 	if len(wordString) == 0 {
 		return nil, false, errors.New("wordString is too short")
-	} else if len(wordString) > settings.MAX_WORD_LENGTH {
+	} else if len(wordString) > Settings["max_word_length"].(int) {
 		return nil, false, errors.New("wordString is too long")
 	}
 
@@ -145,4 +146,61 @@ func (this *WordController) GetAll(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, words)
+}
+
+func (this *WordController) GetInfoByProvider(c *gin.Context) {
+	providerName := c.Param("provider_name")
+	word := c.Param("word")
+
+	switch providerName {
+	case "pearson.com":
+		result, err := getInfoByProviderPearsonCom(word)
+		if err == nil {
+			c.JSON(http.StatusOK, gin.H{
+				"data": result,
+			})
+		} else {
+			_ = c.Error(err)
+			c.JSON(http.StatusBadGateway, gin.H{
+				"error_message": "something bad happened with provider",
+			})
+		}
+	default:
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error_message": "bad provider name",
+		})
+	}
+}
+
+func getInfoByProviderPearsonCom(word string) (interface{}, error) {
+	url := "https://api.pearson.com/v2/dictionaries/entries?headword=" + word + "&limit=10"
+	resp, err := helpers.GetJson(url)
+
+	if err != nil {
+		return nil, err
+	}
+
+	results := resp.(map[string]interface{})["results"].([]interface{})
+
+	for _, result := range results {
+		if result, isOk := result.(map[string]interface{}); isOk {
+			if senses, isOk := result["senses"]; isOk {
+				if senses, isOk := senses.([]interface{}); isOk {
+					for _, sense := range senses {
+						if sense, isOk := sense.(map[string]interface{}); isOk {
+							if definition, isOk := sense["definition"]; isOk {
+								if definition, isOk := definition.(string); isOk {
+									// convert it
+									sense["definition"] = []string{definition}
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+	return results, nil
 }

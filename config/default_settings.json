@@ -1,4 +1,12 @@
 {
-	"url": "http://localhost",
-	"register_token": "secret token"
+    "url": "http://localhost",
+    "register_token": "secret token",
+    "max_word_length": 64,
+    "database": {
+        "name": "test",
+        "username": "test",
+        "password": "test"
+    },
+    "pixabay_api_key": "null",
+    "http_client_timeout": 5
 }
