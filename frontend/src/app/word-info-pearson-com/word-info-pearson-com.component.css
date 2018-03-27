@@ -3,8 +3,8 @@
 }
 
 .word {
-    border-bottom: 2px dashed #4f82d6;
-    padding: 5px 15px;
+    /*border-bottom: 2px dashed #4f82d6;
+    padding: 5px 15px;*/
 }
 
 .info .partOfSpeech {
@@ -14,4 +14,18 @@
 pre {
     /* TODO: remove it */
     background: aquamarine;
+}
+
+.infoPlaceholder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.sense {
+    border-left: 2px solid red;
+    border-bottom: 2px solid red;
 }

@@ -1,18 +1,35 @@
 <div class="horizontalWrapper">
     <div class="verticalWrapper">
         <div class="widthLimiter">
-            <div class="learningBlock floatingBlock" *ngIf="word">
-                <h3 class="word">{{ word.word }}</h3>
-                <h4>How good do you know this?</h4>
-                <div class="buttons">
-                    <button (click)="sendKnowledge(0)">Don't know at all</button>
-                    <button (click)="sendKnowledge(1)">I'm not sure</button>
-                    <button (click)="sendKnowledge(2)">Not so good</button>
-                    <button (click)="sendKnowledge(3)">Good</button>
-                    <button (click)="sendKnowledge(4)">Excellent</button>
-                </div>
-                <h5 *ngIf="sent">You can change your vote</h5>
-            </div>
+            <mat-card *ngIf="word">
+                <mat-card-title>{{ word.word }}</mat-card-title>
+                <!--                <mat-divider></mat-divider>-->
+                <!--                <mat-card-content>How good do you know this?</mat-card-content> -->
+                <mat-card-subtitle>How good do you know this word?</mat-card-subtitle>
+                <mat-card-actions>
+                    <mat-button-toggle-group value="">
+                        <mat-button-toggle (click)="sendKnowledge(0)" value="0">
+                            Don't know at all
+                        </mat-button-toggle>
+                        <mat-button-toggle (click)="sendKnowledge(1)" value="1">
+                            I'm not sure
+                        </mat-button-toggle>
+                        <mat-button-toggle (click)="sendKnowledge(2)" value="2">
+                            Not so good
+                        </mat-button-toggle>
+                        <mat-button-toggle (click)="sendKnowledge(3)" value="3">
+                            Good
+                        </mat-button-toggle>
+                        <mat-button-toggle (click)="sendKnowledge(4)" value="4">
+                            Excellent
+                        </mat-button-toggle>
+                    </mat-button-toggle-group>
+                </mat-card-actions>
+                <mat-card-footer *ngIf="sent">
+                    You can change your vote
+                </mat-card-footer>
+            </mat-card>
+
             <div class="wordInfo" *ngIf="sent">
                 <app-word-info [word]="word"></app-word-info>
             </div>

@@ -1,34 +1,3 @@
-.mainMenu {
-  background: #4f82d6;
-  padding: 0 20px;
-
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: stretch;
-  align-content: stretch;
-}
-
-.mainMenu > div {
-  display: inline-block;
-}
-
-.mainMenu a {
-  display: inline-block;
-  height: 50px;
-  line-height: 50px;
-  padding: 0 10px;
-  font-size: 18px;
-  color: #fff;
-  text-decoration: none;
-}
-
-.mainMenu a:hover {
-  background: #fff;
-  color: #4f82d6;
-}
-
-.placeholder {
-  flex-grow: 1;
+mat-toolbar .title {
+    margin-right: 10px;
 }

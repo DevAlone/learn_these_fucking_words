@@ -8,12 +8,12 @@ import { StartPageComponent } from './start-page/start-page.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { WordsPageComponent } from './words-page/words-page.component';
-import {HttpClientModule} from '@angular/common/http';
-import {JwtModule} from '@auth0/angular-jwt';
-import {FormsModule} from '@angular/forms';
-import {ApiService} from './api.service';
+import { HttpClientModule } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
+import { FormsModule } from '@angular/forms';
+import { ApiService } from './api.service';
 import { MessagesComponent } from './messages/messages.component';
-import {MessageService} from "./message.service";
+import { MessageService } from "./message.service";
 import { DebugPageComponent } from './debug-page/debug-page.component';
 import { MyWordsPageComponent } from './my-words-page/my-words-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
@@ -21,7 +21,7 @@ import { AuthPageComponent } from './auth-page/auth-page.component';
 import { LearningPageComponent } from './learning-page/learning-page.component';
 import { WordInfoComponent } from './word-info/word-info.component';
 import { WordInfoPearsonComComponent } from './word-info-pearson-com/word-info-pearson-com.component';
-
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
@@ -52,6 +52,7 @@ import { WordInfoPearsonComComponent } from './word-info-pearson-com/word-info-p
         // throwNoTokenError: true,
       }
     }),
+    MaterialModule,
   ],
   providers: [
     ApiService,

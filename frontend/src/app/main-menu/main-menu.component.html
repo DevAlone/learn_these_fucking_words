@@ -1,17 +1,19 @@
-<div class="mainMenu">
-  <a routerLink="/index">index</a>
-  <div *ngIf="api.authorized">
-    <a routerLink="/my/words">my words</a>
-    <a routerLink="/words">words</a>
-    <a routerLink="/learning">learning page</a>
-    <a routerLink="/debug">debug</a>
-  </div>
-  <div class="placeholder">
+<mat-toolbar color="primary">
+    <span class="title">Learn these fucking words</span>
 
-  </div>
-  <div class="right">
-    <a routerLink="/login" *ngIf="!api.authorized">login</a>
-    <a routerLink="/register" *ngIf="!api.authorized">register</a>
-    <a routerLink="/login" (click)="logout()" *ngIf="api.authorized">logout</a>
-  </div>
-</div>
+    <a mat-button routerLink="/index">index</a>
+    <div *ngIf="api.authorized">
+        <a mat-button routerLink="/my/words">my words</a>
+        <a mat-button routerLink="/words">words</a>
+        <a mat-button routerLink="/learning">learning page</a>
+        <a mat-button routerLink="/debug">debug</a>
+    </div>
+
+    <span style="flex: 1 1 auto"></span>
+
+    <div>
+        <a mat-button routerLink="/login" *ngIf="!api.authorized">login</a>
+        <a mat-button routerLink="/register" *ngIf="!api.authorized">register</a>
+        <a mat-button routerLink="/login" (click)="logout()" *ngIf="api.authorized">logout</a>
+    </div>
+</mat-toolbar>

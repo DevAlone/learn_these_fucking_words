@@ -16,3 +16,12 @@
     height: 100%;
     margin-right: 10px;
 }
+
+.imagesPlaceholder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}

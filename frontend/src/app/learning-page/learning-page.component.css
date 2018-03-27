@@ -56,3 +56,13 @@
     align-items: center;
     align-content: center;
 }
+
+mat-card-actions {
+    text-align: center;
+    padding: 0 50px;
+}
+
+mat-card-footer {
+    /*    padding: 0 10px 10px 10px;*/
+    margin: 0;
+}
