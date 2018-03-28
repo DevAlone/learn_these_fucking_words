@@ -40,8 +40,7 @@ type Memorization struct {
 	Word                    *Word   `json:"word"`
 	MemorizationCoefficient float32 `sql:",notnull,default:0.0" json:"memorizationCoefficient"`
 	LastUpdateTimestamp     uint64  `sql:",notnull" json:"lastUpdateTimestamp"`
-	// TODO: add last shown time
-	LastShownTime uint64 `sql:",notnull,default:0" json:"lastUpdateTimestamp"`
+	LastShownTime           uint64  `sql:",notnull,default:0" json:"lastShownTime"`
 }
 
 var DB *pg.DB

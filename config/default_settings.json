@@ -8,5 +8,6 @@
         "password": "test"
     },
     "pixabay_api_key": "null",
-    "http_client_timeout": 5
+    "http_client_timeout": 5,
+    "memorizations_update_time_delta": 3600
 }
