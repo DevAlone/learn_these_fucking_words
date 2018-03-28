@@ -26,6 +26,10 @@ pre {
 }
 
 .sense {
-    border-left: 2px solid red;
-    border-bottom: 2px solid red;
+    /*    border-left: 1px solid #eee;*/
+}
+
+.pronunciation {
+    display: inline-block;
+    margin-right: 5px;
 }

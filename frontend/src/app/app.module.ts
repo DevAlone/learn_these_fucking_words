@@ -23,6 +23,7 @@ import { WordInfoComponent } from './word-info/word-info.component';
 import { WordInfoPearsonComComponent } from './word-info-pearson-com/word-info-pearson-com.component';
 import { MaterialModule } from './material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AudioPlayButtonComponent } from './audio-play-button/audio-play-button.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AuthPageComponent,
     LearningPageComponent,
     WordInfoComponent,
-    WordInfoPearsonComComponent
+    WordInfoPearsonComComponent,
+    AudioPlayButtonComponent
   ],
   imports: [
     BrowserModule,

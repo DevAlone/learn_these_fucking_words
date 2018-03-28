@@ -4,27 +4,45 @@
 <mat-card class="info" *ngFor="let info of wordInformations">
     <mat-card-title class="word">
         <span>{{ info.headword }}</span>
-        <span class="partOfSpeech" title="part of speech">
+        <span *ngIf="part_of_speech" class="partOfSpeech" title="part of speech">
             ({{ info.part_of_speech }})
         </span>
     </mat-card-title>
 
     <mat-card-subtitle class="pronunciations" *ngIf="info.pronunciations">
-        <div class="pronunciation" *ngFor="let pronunciation of info.pronunciations">
-            pronunciation {{ pronunciation }}
+        <div class="pronunciation" *ngFor="let pronunciation of info.pronunciations" title="{{ pronunciation.lang }}">
+            <span *ngIf="pronunciation.ipa" class="transcription">
+                /{{ pronunciation.ipa }}/
+            </span>
+            <!--button mat-icon-button color="warn" (click)="playAudio(audio.url)" class="audio" *ngFor="let audio of pronunciation.audio" title="{{ audio.lang }}">
+                    <mat-icon>play_arrow</mat-icon>
+            </button-->
+            <app-audio-play-button *ngFor="let audio of pronunciation.audio" [url]="'https://api.pearson.com' + audio.url" [title]="'audio.lang'"></app-audio-play-button>
+            <!--mat-divider [vertical]="false"></mat-divider-->
         </div>
     </mat-card-subtitle>
     <mat-card-content>
         <div class="sense" *ngFor="let sense of info.senses">
-            <div class="defenitions" *ngIf="sense.definition">
-                <div class="definition" *ngFor="let definition of sense.definition">
+            <mat-list class="defenitions" *ngIf="sense.definition">
+                <mat-list-item class="definition" *ngFor="let definition of sense.definition">
                     {{definition}}
-                </div>
-            </div>
+                    <mat-divider></mat-divider>
+                </mat-list-item>
+            </mat-list>
             <div class="examples" *ngIf="sense.examples">
-                <p *ngFor="let example of sense.examples">
-                    {{ example|json }}
-                </p>
+                <h4>Examples</h4>
+                <mat-list>
+                    <mat-list-item *ngFor="let example of sense.examples">
+                        <span *ngIf="example.text">{{ example.text }}</span>
+                        <span *ngIf="example.audio">
+                            <app-audio-play-button 
+                                *ngFor="let exampleAudio of example.audio" 
+                                [url]="'https://api.pearson.com' + exampleAudio.url" 
+                                [title]="'play'">
+                            </app-audio-play-button>
+                        </span>
+                    </mat-list-item>
+                </mat-list>
             </div>
             <div class="grammaticalExamples" *ngIf="sense.gramatical_examples">
                 <p *ngFor="let grammaticalExample of sense.gramatical_examples">
@@ -33,6 +51,17 @@
             </div>
             <div class="crossReferences" *ngIf="sense.cross_references">
                 crossReferences are here
+            </div>
+            <div class="relatedWords" *ngIf="sense.relatedWords">
+                <span class="relatedWord" *ngFor="let relatedWord of sense.relatedWords">
+                    {{ relatedWord }}
+                </span>
+            </div>
+            <!-- TODO: need backend support -->
+            <div class="synonyms" *ngIf="sense.synonyms">
+                <span class="synonym" *ngFor="let synonym of sense.synonyms">
+                    {{ synonym }}
+                </span>
             </div>
         </div>
     </mat-card-content>
