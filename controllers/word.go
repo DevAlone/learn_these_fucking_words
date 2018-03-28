@@ -182,6 +182,8 @@ func getInfoByProviderPearsonCom(word string) (interface{}, error) {
 
 	results := resp.(map[string]interface{})["results"].([]interface{})
 
+	// TODO: convert senses/synonym to synses/synonyms
+
 	for _, result := range results {
 		if result, isOk := result.(map[string]interface{}); isOk {
 			if senses, isOk := result["senses"]; isOk {

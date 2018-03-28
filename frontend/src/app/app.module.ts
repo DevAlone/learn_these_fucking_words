@@ -24,6 +24,7 @@ import { WordInfoPearsonComComponent } from './word-info-pearson-com/word-info-p
 import { MaterialModule } from './material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AudioPlayButtonComponent } from './audio-play-button/audio-play-button.component';
+import { WordInfoPearsonComExampleComponent } from './word-info-pearson-com-example/word-info-pearson-com-example.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AudioPlayButtonComponent } from './audio-play-button/audio-play-button.
     LearningPageComponent,
     WordInfoComponent,
     WordInfoPearsonComComponent,
-    AudioPlayButtonComponent
+    AudioPlayButtonComponent,
+    WordInfoPearsonComExampleComponent
   ],
   imports: [
     BrowserModule,
