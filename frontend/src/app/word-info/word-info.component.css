@@ -25,3 +25,9 @@
     align-items: center;
     align-content: center;
 }
+
+iframe {
+    display: block;
+    width: 100%;
+    min-height: 10000px;
+}

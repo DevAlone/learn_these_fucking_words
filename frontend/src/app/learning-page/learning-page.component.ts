@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component, OnInit, ViewChild, ElementRef, QueryList
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../api.service';
 import { Router } from '@angular/router';
 import { Word } from '../models/word';
+import { MatButtonToggleGroup } from '@angular/material';
 
 @Component({
   selector: 'app-learning-page',
@@ -13,15 +16,19 @@ export class LearningPageComponent implements OnInit {
   memorization: any;
   word: Word;
   sent = false;
+  chosenKnowledge: number = 0;
 
   constructor(
     private api: ApiService,
     private router: Router,
     private http: HttpClient
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.nextWord();
+  }
+  ngAfterViewInit(): void {
   }
 
   sendKnowledge(value: number) {
@@ -42,6 +49,7 @@ export class LearningPageComponent implements OnInit {
       this.memorization = result.data;
       this.word = this.memorization.word;
       this.sent = false;
+      this.chosenKnowledge = (this.memorization.memorizationCoefficient * 4) | 0;
     }, error => {
       if (error.status === 404) {
         this.router.navigateByUrl('/my/words');

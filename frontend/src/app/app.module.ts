@@ -22,6 +22,7 @@ import { LearningPageComponent } from './learning-page/learning-page.component';
 import { WordInfoComponent } from './word-info/word-info.component';
 import { WordInfoPearsonComComponent } from './word-info-pearson-com/word-info-pearson-com.component';
 import { MaterialModule } from './material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { MaterialModule } from './material.module';
       }
     }),
     MaterialModule,
+    BrowserAnimationsModule
   ],
   providers: [
     ApiService,

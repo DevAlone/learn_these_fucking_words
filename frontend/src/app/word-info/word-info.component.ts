@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Word } from '../models/word';
 import { ApiService } from '../api.service';
 import { HttpClient } from '@angular/common/http';
@@ -10,11 +11,14 @@ import { HttpClient } from '@angular/common/http';
 })
 export class WordInfoComponent implements OnInit {
   @Input() word: Word;
+  @ViewChild('tabs', { read: ElementRef }) tabs: ElementRef;
+  @ViewChild('wikipediaFrame', { read: ElementRef }) wikipediaFrame: ElementRef;
   images: any[];
 
   constructor(
     private api: ApiService,
-    private http: HttpClient
+    private http: HttpClient,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -23,4 +27,7 @@ export class WordInfoComponent implements OnInit {
     });
   }
 
+  tabChanged(event: any) {
+    this.tabs.nativeElement.scrollIntoView();
+  }
 }

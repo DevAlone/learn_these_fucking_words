@@ -66,3 +66,11 @@ mat-card-footer {
     /*    padding: 0 10px 10px 10px;*/
     margin: 0;
 }
+
+mat-button-toggle-group {
+    box-shadow: none;
+}
+
+mat-button-toggle {
+    color: inherit;
+}
