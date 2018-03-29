@@ -116,7 +116,7 @@ func addWord(languageCode string, wordString string, userId uint64, c *gin.Conte
 		UserId:                  userId,
 		WordId:                  word.Id,
 		MemorizationCoefficient: 0,
-		LastUpdateTimestamp:     uint64(time.Now().Unix()),
+		LastUpdateTimestamp:     time.Now().Unix(),
 	}
 	result, err := DB.Model(&memorization).
 		OnConflict("(word_id, user_id) DO NOTHING").

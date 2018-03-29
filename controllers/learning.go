@@ -1,12 +1,14 @@
 package controllers
 
 import . "../models"
+import . "../config"
 
 import (
 	"../helpers"
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"
 	"net/http"
+	"time"
 )
 
 type LearningController struct{}
@@ -18,7 +20,9 @@ func (this *LearningController) GetWord(c *gin.Context) {
 
 	err := DB.Model(&memorization).
 		Column("Word").
-		Where("user_id = ?", userId).Order("memorization_coefficient").
+		Where("user_id = ?", userId).
+		Where("last_shown_time < ?", time.Now().Unix()-Settings.LearningShowingTimeout).
+		Order("memorization_coefficient").
 		First()
 
 	if err == pg.ErrNoRows {
@@ -31,6 +35,19 @@ func (this *LearningController) GetWord(c *gin.Context) {
 	if err != nil {
 		c.Error(err)
 		c.JSON(http.StatusBadRequest, gin.H{
+			"error_message": "some shit happened",
+		})
+		return
+	}
+
+	memorization.LastShownTime = time.Now().Unix()
+	_, err = DB.Model(&memorization).
+		Column("last_shown_time").
+		Update()
+
+	if err != nil {
+		c.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"error_message": "some shit happened",
 		})
 		return

@@ -33,7 +33,7 @@ func UpdateMemorizations() {
 	}
 
 	for _, memorization := range items {
-		currentTimestamp := uint64(time.Now().Unix())
+		currentTimestamp := time.Now().Unix()
 
 		dt := currentTimestamp - memorization.LastUpdateTimestamp
 		forgettingSpeed := 1.0 / Settings.MemorizationFullForgettingInDays / 24 / 3600

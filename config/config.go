@@ -14,6 +14,7 @@ var Settings struct {
 	MemorizationsUpdateTimeDelta       uint32
 	MemorizationFullForgettingInDays   float64
 	MemorizationMinimumForgettingSpeed float64
+	LearningShowingTimeout             int64
 }
 
 // var Settings = make(map[string]interface{})

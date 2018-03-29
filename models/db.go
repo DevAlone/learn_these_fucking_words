@@ -39,8 +39,8 @@ type Memorization struct {
 	WordId                  uint32  `sql:",notnull,unique:user_id__word_id" json:"wordId"`
 	Word                    *Word   `json:"word"`
 	MemorizationCoefficient float64 `sql:",notnull,default:0.0" json:"memorizationCoefficient"`
-	LastUpdateTimestamp     uint64  `sql:",notnull" json:"lastUpdateTimestamp"`
-	LastShownTime           uint64  `sql:",notnull,default:0" json:"lastShownTime"`
+	LastUpdateTimestamp     int64   `sql:",notnull" json:"lastUpdateTimestamp"`
+	LastShownTime           int64   `sql:",notnull,default:0" json:"lastShownTime"`
 }
 
 var DB *pg.DB
