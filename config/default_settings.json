@@ -1,13 +1,14 @@
 {
-    "url": "http://localhost",
-    "register_token": "secret token",
-    "max_word_length": 64,
-    "database": {
-        "name": "test",
-        "username": "test",
-        "password": "test"
+    "RegisterToken": "secret token",
+    "MaxWordLength": 64,
+    "Database": {
+        "Name": "test",
+        "Username": "test",
+        "Password": "test"
     },
-    "pixabay_api_key": "null",
-    "http_client_timeout": 5,
-    "memorizations_update_time_delta": 3600
+    "PixabayApiKey": "null",
+    "HttpClientTimeout": 5,
+    "MemorizationsUpdateTimeDelta": 3600,
+    "MemorizationFullForgettingInDays": 365.0,
+    "MemorizationMinimumForgettingSpeed": 1.5854895991882293e-08
 }

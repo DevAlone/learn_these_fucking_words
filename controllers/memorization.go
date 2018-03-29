@@ -58,7 +58,7 @@ func (this *MemorizationController) UpdateMyMemorization(c *gin.Context) {
 	}
 
 	var userData struct {
-		MemorizationCoefficient float32 `json:"memorizationCoefficient"`
+		MemorizationCoefficient float64 `json:"memorizationCoefficient"`
 	}
 
 	if err := c.ShouldBindJSON(&userData); err != nil {

@@ -38,7 +38,7 @@ type Memorization struct {
 	User                    *User   `json:"user"`
 	WordId                  uint32  `sql:",notnull,unique:user_id__word_id" json:"wordId"`
 	Word                    *Word   `json:"word"`
-	MemorizationCoefficient float32 `sql:",notnull,default:0.0" json:"memorizationCoefficient"`
+	MemorizationCoefficient float64 `sql:",notnull,default:0.0" json:"memorizationCoefficient"`
 	LastUpdateTimestamp     uint64  `sql:",notnull" json:"lastUpdateTimestamp"`
 	LastShownTime           uint64  `sql:",notnull,default:0" json:"lastShownTime"`
 }
@@ -46,11 +46,11 @@ type Memorization struct {
 var DB *pg.DB
 
 func InitDb() error {
-	dbConfig := Settings["database"].(map[string]interface{})
+	dbConfig := Settings.Database
 	DB = pg.Connect(&pg.Options{
-		Database: dbConfig["name"].(string),
-		User:     dbConfig["username"].(string),
-		Password: dbConfig["password"].(string),
+		Database: dbConfig["Name"],
+		User:     dbConfig["Username"],
+		Password: dbConfig["Password"],
 	})
 
 	DB.OnQueryProcessed(func(event *pg.QueryProcessedEvent) {

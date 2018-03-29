@@ -2,42 +2,61 @@ package config
 
 import (
 	"encoding/json"
-	"errors"
-	"io/ioutil"
 	"os"
 )
 
-var Settings = make(map[string]interface{})
+var Settings struct {
+	RegisterToken                      string
+	MaxWordLength                      int
+	Database                           map[string]string
+	PixabayApiKey                      string
+	HttpClientTimeout                  int32
+	MemorizationsUpdateTimeDelta       uint32
+	MemorizationFullForgettingInDays   float64
+	MemorizationMinimumForgettingSpeed float64
+}
 
-func updateFromFile(config map[string]interface{}, filename string) error {
-	bytes, err := ioutil.ReadFile(filename)
+// var Settings = make(map[string]interface{})
+
+func updateSettingsFromFile(filename string) error {
+	file, _ := os.Open(filename)
+	defer file.Close()
+
+	decoder := json.NewDecoder(file)
+	err := decoder.Decode(&Settings)
+
+	return err
+
+	/*bytes, err := ioutil.ReadFile(filename)
 
 	if err != nil {
 		return errors.New("file: " + err.Error())
 	}
 
+
+
 	var result map[string]interface{}
 
-	if err := json.Unmarshal(bytes, &result); err != nil {
-		return err
-	}
+		if err := json.Unmarshal(bytes, &result); err != nil {
+			return err
+		}
 
-	for key, val := range result {
-		config[key] = val
-	}
+		for key, val := range result {
+			config[key] = val
+		}
 
-	return nil
+	return nil*/
 }
 
 func init() {
-	err := updateFromFile(Settings, "config/default_settings.json")
+	err := updateSettingsFromFile("config/default_settings.json")
 
 	if err != nil {
 		panic(err)
 	}
 
 	if _, err := os.Stat("config/settings.json"); err == nil {
-		err = updateFromFile(Settings, "config/settings.json")
+		err = updateSettingsFromFile("config/settings.json")
 
 		if err != nil {
 			panic(err)

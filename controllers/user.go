@@ -43,7 +43,7 @@ func (this *UserController) Register(c *gin.Context) {
 		return
 	}
 
-	if user.Token != Settings["register_token"] {
+	if user.Token != Settings.RegisterToken {
 		c.JSON(http.StatusBadRequest, gin.H{"error_message": "you don't have a token, don't you?"})
 		return
 	}

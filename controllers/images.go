@@ -13,7 +13,7 @@ type ImageController struct{}
 func (this *ImageController) Get(c *gin.Context) {
 	var searchText = c.Param("search_text")
 
-	url := "https://pixabay.com/api/?key=" + Settings["pixabay_api_key"].(string) + "&q=" + searchText
+	url := "https://pixabay.com/api/?key=" + Settings.PixabayApiKey + "&q=" + searchText
 
 	resp, err := helpers.GetJson(url)
 

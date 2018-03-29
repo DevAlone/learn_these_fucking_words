@@ -1,6 +1,7 @@
 package scheduler
 
 import (
+	"math"
 	"time"
 
 	. "../config"
@@ -20,7 +21,7 @@ func Init() error {
 
 func UpdateMemorizations() {
 	var items []Memorization
-	last_update_seletor := time.Now().Unix() - int64(Settings["memorizations_update_time_delta"].(float64))
+	last_update_seletor := uint64(time.Now().Unix()) - uint64(Settings.MemorizationsUpdateTimeDelta)
 
 	err := DB.Model(&items).
 		Where("last_update_timestamp < ?", last_update_seletor).
@@ -32,12 +33,24 @@ func UpdateMemorizations() {
 	}
 
 	for _, memorization := range items {
-		memorization.MemorizationCoefficient -= 0.00001
+		currentTimestamp := uint64(time.Now().Unix())
+
+		dt := currentTimestamp - memorization.LastUpdateTimestamp
+		forgettingSpeed := 1.0 / Settings.MemorizationFullForgettingInDays / 24 / 3600
+		forgettingSpeed *= 1 - math.Sqrt(memorization.MemorizationCoefficient)
+
+		if forgettingSpeed < Settings.MemorizationMinimumForgettingSpeed {
+			forgettingSpeed = Settings.MemorizationMinimumForgettingSpeed
+		}
+
+		memorizationDelta := float64(dt) * forgettingSpeed
+
+		memorization.MemorizationCoefficient -= memorizationDelta
 		if memorization.MemorizationCoefficient < 0 {
 			memorization.MemorizationCoefficient = 0
 		}
 
-		memorization.LastUpdateTimestamp = uint64(time.Now().Unix())
+		memorization.LastUpdateTimestamp = currentTimestamp
 		_, err = DB.Model(&memorization).
 			Column("memorization_coefficient", "last_update_timestamp").
 			Update()
@@ -46,12 +59,4 @@ func UpdateMemorizations() {
 			panic(err)
 		}
 	}
-
-	/*_, err = DB.Model(&items).
-	Column("memorization_coefficient").
-	Update()
-
-	if err != nil {
-		panic(err)
-	}*/
 }

@@ -57,7 +57,7 @@ func addWord(languageCode string, wordString string, userId uint64, c *gin.Conte
 
 	if len(wordString) == 0 {
 		return nil, false, errors.New("wordString is too short")
-	} else if len(wordString) > Settings["max_word_length"].(int) {
+	} else if len(wordString) > Settings.MaxWordLength {
 		return nil, false, errors.New("wordString is too long")
 	}
 
