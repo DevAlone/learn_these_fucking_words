@@ -1,12 +1,15 @@
 package controllers
 
 import (
+	. "../config"
 	"../helpers"
 	. "../models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type MemorizationController struct{}
@@ -85,7 +88,7 @@ func (this *MemorizationController) UpdateMyMemorization(c *gin.Context) {
 	}
 
 	if err != nil {
-		c.Error(err)
+		_ = c.Error(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error_message": "Some shit happened",
 		})
@@ -94,7 +97,12 @@ func (this *MemorizationController) UpdateMyMemorization(c *gin.Context) {
 
 	memorization.MemorizationCoefficient = userData.MemorizationCoefficient
 
-	_, err = DB.Model(&memorization).Column("memorization_coefficient").Update()
+	dt := float64(Settings.LearningNextShowMaxTime-Settings.LearningNextShowMinTime)*memorization.MemorizationCoefficient + float64(Settings.LearningNextShowMinTime)
+
+	memorization.NextShowTimestamp = time.Now().Unix() + int64(dt)
+	_, err = DB.Model(&memorization).
+		Column("memorization_coefficient", "next_show_timestamp").
+		Update()
 
 	if err != nil {
 		_ = c.Error(err)

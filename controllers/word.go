@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"regexp"
 	"strings"
 	"time"
 
@@ -52,13 +53,19 @@ func (this *WordController) Add(context *gin.Context) {
 }
 
 func addWord(languageCode string, wordString string, userId uint64, c *gin.Context) (*Memorization, bool, error) {
-	wordString = strings.ToLower(wordString)
+	// wordString = strings.ToLower(wordString)
 	wordString = strings.TrimSpace(wordString)
 
 	if len(wordString) == 0 {
-		return nil, false, errors.New("wordString is too short")
+		return nil, false, errors.New("word is too short")
 	} else if len(wordString) > Settings.MaxWordLength {
-		return nil, false, errors.New("wordString is too long")
+		return nil, false, errors.New("word is too long")
+	}
+
+	match, _ := regexp.MatchString("^([a-zA-Z0-9]+[ -_]?)+$", wordString)
+
+	if !match {
+		return nil, false, errors.New("word contains forbidden symbols")
 	}
 
 	// TODO: detect language
@@ -83,7 +90,7 @@ func addWord(languageCode string, wordString string, userId uint64, c *gin.Conte
 
 	err = DB.Model(&word).
 		Column("word.id", "language_id", "Language").
-		Where("word = ?word").
+		Where("LOWER(word) = LOWER(?word)").
 		Where("language_id = ?language_id").
 		Select()
 

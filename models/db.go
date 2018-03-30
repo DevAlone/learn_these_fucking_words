@@ -26,10 +26,12 @@ type Language struct {
 }
 
 type Word struct {
-	Id         uint32    `json:"id,omitempty"`
-	Word       string    `sql:",notnull,unique:word__language_id,index" json:"word,omitempty"`
-	LanguageId uint16    `sql:",notnull,unique:word__language_id,index" json:"languageId,omitempty"`
-	Language   *Language `json:"language"`
+	Id               uint32    `json:"id,omitempty"`
+	Word             string    `sql:",notnull,unique:word__language_id,index" json:"word,omitempty"`
+	LanguageId       uint16    `sql:",notnull,unique:word__language_id,index" json:"languageId,omitempty"`
+	Language         *Language `json:"language"`
+	ApprovedByUserId uint64    `sql:",nonull,default=0" json:"approvedByUserId"`
+	ApprovedByUser   *User     `json:"approvedByUser"`
 }
 
 type Memorization struct {
@@ -40,7 +42,7 @@ type Memorization struct {
 	Word                    *Word   `json:"word"`
 	MemorizationCoefficient float64 `sql:",notnull,default:0.0" json:"memorizationCoefficient"`
 	LastUpdateTimestamp     int64   `sql:",notnull" json:"lastUpdateTimestamp"`
-	LastShownTime           int64   `sql:",notnull,default:0" json:"lastShownTime"`
+	NextShowTimestamp       int64   `sql:",notnull,default:0" json:"nextShowTimestamp"`
 }
 
 var DB *pg.DB

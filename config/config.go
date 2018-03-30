@@ -6,7 +6,14 @@ import (
 )
 
 var Settings struct {
+	ListenAddress                      string
+	Debug                              bool
 	RegisterToken                      string
+	RegisterForbiddenUsernames         []string
+	RegisterUsernameMinLength          int
+	RegisterUsernameMaxLength          int
+	RegisterPasswordMinLength          int
+	RegisterPasswordMaxLength          int
 	MaxWordLength                      int
 	Database                           map[string]string
 	PixabayApiKey                      string
@@ -14,7 +21,8 @@ var Settings struct {
 	MemorizationsUpdateTimeDelta       uint32
 	MemorizationFullForgettingInDays   float64
 	MemorizationMinimumForgettingSpeed float64
-	LearningShowingTimeout             int64
+	LearningNextShowMinTime            int64
+	LearningNextShowMaxTime            int64
 }
 
 // var Settings = make(map[string]interface{})

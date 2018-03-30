@@ -19,6 +19,8 @@
     <td>Language</td>
     <td>Word</td>
     <td>How good you know this word</td>
+    <td>When you learnt this word last time</td>
+    <td>When you will learn this word next time</td>
   </tr>
   </thead>
   <tbody>
@@ -26,6 +28,8 @@
     <td>{{ item.word.language.code }}</td>
     <td>{{ item.word.word }}</td>
     <td>{{ item.memorizationCoefficient }}</td>
+    <td>{{ item.lastUpdateTimestamp }}</td>
+    <td>{{ item.nextShowTimestamp }}</td>
   </tr>
   </tbody>
 </table>

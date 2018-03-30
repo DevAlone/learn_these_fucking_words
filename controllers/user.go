@@ -4,6 +4,7 @@ import . "../models"
 import . "../config"
 
 import (
+	"../helpers"
 	"../middlewares"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -51,15 +52,30 @@ func (this *UserController) Register(c *gin.Context) {
 	user.Username = strings.TrimSpace(user.Username)
 	// user.Username = strings.ToLower(user.Username)
 
-	match, _ := regexp.MatchString("^[a-zA-Z0-9_]{4,9}$", user.Username)
-	if !match {
-		c.JSON(http.StatusBadRequest, gin.H{"error_message": "bad username"})
+	if len(user.Username) < Settings.RegisterUsernameMinLength {
+		c.JSON(http.StatusBadRequest, gin.H{"error_message": "username is too short"})
+		return
+	} else if len(user.Username) > Settings.RegisterUsernameMaxLength {
+		c.JSON(http.StatusBadRequest, gin.H{"error_message": "username is too long"})
 		return
 	}
 
-	match, _ = regexp.MatchString("^.{6,64}$", user.Password)
+	if len(user.Password) < Settings.RegisterPasswordMinLength {
+		c.JSON(http.StatusBadRequest, gin.H{"error_message": "password is too short"})
+		return
+	} else if len(user.Password) > Settings.RegisterPasswordMaxLength {
+		c.JSON(http.StatusBadRequest, gin.H{"error_message": "password is too long"})
+		return
+	}
+
+	match, _ := regexp.MatchString("^[a-zA-Z0-9_]+$", user.Username)
 	if !match {
-		c.JSON(http.StatusBadRequest, gin.H{"error_message": "bad password"})
+		c.JSON(http.StatusBadRequest, gin.H{"error_message": "username contains forbidden symbols"})
+		return
+	}
+
+	if helpers.IsStringInSlice(strings.ToLower(user.Username), Settings.RegisterForbiddenUsernames) {
+		c.JSON(http.StatusForbidden, gin.H{"error_message": "this username is reserved for internal purposes"})
 		return
 	}
 

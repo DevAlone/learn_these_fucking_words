@@ -21,7 +21,7 @@ func (this *LearningController) GetWord(c *gin.Context) {
 	err := DB.Model(&memorization).
 		Column("Word").
 		Where("user_id = ?", userId).
-		Where("last_shown_time < ?", time.Now().Unix()-Settings.LearningShowingTimeout).
+		Where("next_show_timestamp < ?", time.Now().Unix()).
 		Order("memorization_coefficient").
 		First()
 
@@ -33,16 +33,16 @@ func (this *LearningController) GetWord(c *gin.Context) {
 	}
 
 	if err != nil {
-		c.Error(err)
+		_ = c.Error(err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error_message": "some shit happened",
 		})
 		return
 	}
 
-	memorization.LastShownTime = time.Now().Unix()
+	memorization.NextShowTimestamp = time.Now().Unix() + Settings.LearningNextShowMinTime
 	_, err = DB.Model(&memorization).
-		Column("last_shown_time").
+		Column("next_show_timestamp").
 		Update()
 
 	if err != nil {

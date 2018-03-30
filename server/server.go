@@ -1,6 +1,7 @@
 package server
 
 import (
+	. "../config"
 	"../controllers"
 	"../middlewares"
 	"github.com/gin-contrib/static"
@@ -8,12 +9,17 @@ import (
 )
 
 func Run() error {
-	//gin.SetMode(gin.ReleaseMode)
+	if !Settings.Debug {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 
-	router.Use(static.Serve("/", static.LocalFile("./frontend/dist", true)))
+	if Settings.Debug {
+		router.Use(static.Serve("/", static.LocalFile("./frontend/dist", true)))
+	}
 
 	// the jwt middleware
 
@@ -48,5 +54,5 @@ func Run() error {
 		api.GET("/images/:search_text", imageController.Get)
 	}
 
-	return router.Run()
+	return router.Run(Settings.ListenAddress)
 }

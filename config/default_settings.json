@@ -1,5 +1,11 @@
 {
+    "Debug": false,
     "RegisterToken": "secret token",
+    "RegisterForbiddenUsernames": [],
+    "RegisterUsernameMinLength": 5,
+    "RegisterUsernameMaxLength": 16,
+    "RegisterPasswordMinLength": 6,
+    "RegisterPasswordMaxLength": 64,
     "MaxWordLength": 64,
     "Database": {
         "Name": "test",
@@ -11,5 +17,6 @@
     "MemorizationsUpdateTimeDelta": 3600,
     "MemorizationFullForgettingInDays": 365.0,
     "MemorizationMinimumForgettingSpeed": 1.5854895991882293e-08,
-    "LearningShowingTimeout": 21600
+    "LearningNextShowMinTime": 21600,
+    "LearningNextShowMaxTime": 2592000
 }
