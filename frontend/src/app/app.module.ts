@@ -51,7 +51,7 @@ import { WordInfoPearsonComExampleComponent } from './word-info-pearson-com-exam
     HttpClientModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: () => localStorage.getItem('access_token'),
+        tokenGetter: function() { return localStorage.getItem('access_token'); },
         whitelistedDomains: ['localhost:8080'],
         blacklistedRoutes: ['localhost:8080/login'],
         // throwNoTokenError: true,
