@@ -62,7 +62,7 @@ export class ApiService {
         url = '/' + url;
       }
 
-      url = '/api/v1' + url;
+      url = window.location.origin + '/api/v1' + url;
 
       return this.http[requestMethod](url, data).subscribe(result => {
         observer.next(result);
@@ -74,7 +74,13 @@ export class ApiService {
           this.router.navigateByUrl('/login');
         }
 
-        this.messageService.error(error.error.error_message);
+        console.log(error);
+
+        if (error.error) {
+            this.messageService.error(error.error.error_message);
+        } else {
+            this.messageService.error(error);
+        }
 
         observer.error(error);
       });

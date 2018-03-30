@@ -56,7 +56,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: ['localhost:8080'],
+        whitelistedDomains: ['ltfw.d3d.info', 'localhost:12345'],
         blacklistedRoutes: ['localhost:8080/login'],
         // throwNoTokenError: true,
       }
