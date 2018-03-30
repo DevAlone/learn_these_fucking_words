@@ -26,6 +26,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AudioPlayButtonComponent } from './audio-play-button/audio-play-button.component';
 import { WordInfoPearsonComExampleComponent } from './word-info-pearson-com-example/word-info-pearson-com-example.component';
 
+function tokenGetter() {
+    return localStorage.getItem('access_token'); 
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +55,7 @@ import { WordInfoPearsonComExampleComponent } from './word-info-pearson-com-exam
     HttpClientModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: function() { return localStorage.getItem('access_token'); },
+        tokenGetter: tokenGetter,
         whitelistedDomains: ['localhost:8080'],
         blacklistedRoutes: ['localhost:8080/login'],
         // throwNoTokenError: true,
