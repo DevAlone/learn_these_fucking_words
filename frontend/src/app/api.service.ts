@@ -62,7 +62,7 @@ export class ApiService {
         url = '/' + url;
       }
 
-      url = 'http://localhost:8080/api/v1' + url;
+      url = '/api/v1' + url;
 
       return this.http[requestMethod](url, data).subscribe(result => {
         observer.next(result);
