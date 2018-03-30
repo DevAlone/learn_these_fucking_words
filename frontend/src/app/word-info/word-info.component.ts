@@ -18,7 +18,7 @@ export class WordInfoComponent implements OnInit {
   constructor(
     private api: ApiService,
     private http: HttpClient,
-    private sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {

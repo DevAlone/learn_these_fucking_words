@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+/*import { NgModule } from '@angular/core';
 import * as MATERIAL_MODULES from '@angular/material';
 
 export function mapMaterialModules() {
@@ -17,4 +17,51 @@ const modules = mapMaterialModules();
   exports: modules
 })
 export class MaterialModule { }
+*/
+
+import { NgModule } from '@angular/core';
+
+import {
+  MatButtonModule,
+  MatMenuModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatCardModule,
+  MatButtonToggleModule,
+MatProgressSpinnerModule,
+MatTabsModule,
+MatListModule,
+
+
+
+} from '@angular/material';
+
+// import {} from '@angular/material/progress-spinner';
+// import {} from '@angular/material/tabs';
+
+@NgModule({
+  imports: [
+    MatButtonModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatCardModule,
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
+    MatTabsModule,
+    MatListModule,
+   ],
+  exports: [
+    MatButtonModule,
+    MatMenuModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatCardModule,
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
+    MatTabsModule,
+    MatListModule,
+   ]
+})
+export class MaterialModule {}
 
