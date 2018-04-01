@@ -1,1 +1,5 @@
 ability to add new words by selecting text on site
+add service user(for approving words from init db)
+drop production database
+add salt for users' passwords
+add users to init

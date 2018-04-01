@@ -30,8 +30,9 @@ type Word struct {
 	Word             string    `sql:",notnull,unique:word__language_id,index" json:"word,omitempty"`
 	LanguageId       uint16    `sql:",notnull,unique:word__language_id,index" json:"languageId,omitempty"`
 	Language         *Language `json:"language"`
-	ApprovedByUserId uint64    `sql:",nonull,default=0" json:"approvedByUserId"`
+	ApprovedByUserId uint64    `sql:",notnull,default=0" json:"approvedByUserId"`
 	ApprovedByUser   *User     `json:"approvedByUser"`
+	Frequency        float32   `sql:",notnull,default=0.0" json:"frequency"`
 }
 
 type Memorization struct {
@@ -60,8 +61,9 @@ func InitDb() error {
 		if err != nil {
 			panic(err)
 		}
-
-		fmt.Printf("SQL: %s %s\n", time.Since(event.StartTime), query)
+		if Settings.Debug {
+			fmt.Printf("SQL: %s %s\n", time.Since(event.StartTime), query)
+		}
 	})
 
 	err := createSchema(DB)
