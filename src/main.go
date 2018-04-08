@@ -1,10 +1,11 @@
 package main
 
 import (
-	"./initialization"
-	"./models"
-	"./scheduler"
-	"./server"
+	"initialization"
+	"models"
+	"scheduler"
+	"server"
+
 	"flag"
 	"fmt"
 )

@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	. "../config"
-	"../helpers"
-	. "../models"
+	. "config"
+	"helpers"
+	. "models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"

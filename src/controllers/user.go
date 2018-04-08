@@ -1,11 +1,11 @@
 package controllers
 
-import . "../models"
-import . "../config"
-
 import (
-	"../helpers"
-	"../middlewares"
+	. "config"
+	"helpers"
+	"middlewares"
+	. "models"
+
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"

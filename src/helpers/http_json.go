@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	. "../config"
+	. "config"
 )
 
 var client = &http.Client{

@@ -1,12 +1,12 @@
 package controllers
 
-import . "../models"
-import . "../config"
+import . "models"
+import . "config"
 
 import (
-	"../helpers"
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"
+	"helpers"
 	"net/http"
 	"time"
 )

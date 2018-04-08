@@ -4,8 +4,8 @@ import (
 	"math"
 	"time"
 
-	. "../config"
-	. "../models"
+	. "config"
+	. "models"
 )
 
 func Init() error {

@@ -3,9 +3,9 @@ package controllers
 import (
 	"net/http"
 
-	. "../config"
-	"../helpers"
+	. "config"
 	"github.com/gin-gonic/gin"
+	"helpers"
 )
 
 type ImageController struct{}

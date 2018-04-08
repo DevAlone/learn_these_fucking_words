@@ -1,17 +1,16 @@
 package controllers
 
-import . "../models"
-import . "../config"
-
 import (
+	. "config"
 	"errors"
 	"fmt"
+	"helpers"
+	. "models"
 	"net/http"
 	"regexp"
 	"strings"
 	"time"
 
-	"../helpers"
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg"
 )

@@ -1,7 +1,7 @@
 package initialization
 
 import (
-	. "../models"
+	// . "models"
 
 	"bufio"
 	"fmt"

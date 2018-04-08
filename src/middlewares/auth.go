@@ -1,6 +1,6 @@
 package middlewares
 
-import . "../models"
+import . "models"
 
 import (
 	"fmt"

@@ -1,6 +1,6 @@
 package controllers
 
-import . "../models"
+import . "models"
 
 import (
 	"github.com/gin-gonic/gin"

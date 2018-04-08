@@ -1,6 +1,6 @@
 package models
 
-import . "../config"
+import . "config"
 
 import (
 	"fmt"

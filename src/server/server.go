@@ -1,11 +1,11 @@
 package server
 
 import (
-	. "../config"
-	"../controllers"
-	"../middlewares"
+	. "config"
+	"controllers"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"middlewares"
 )
 
 func Run() error {
