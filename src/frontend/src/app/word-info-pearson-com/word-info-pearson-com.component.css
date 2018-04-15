@@ -1,0 +1,34 @@
+.info {
+    margin-bottom: 10px;
+}
+
+.info h4 {
+    color: rgba(0, 0, 0, .54);
+}
+
+.word {
+    /*border-bottom: 2px dashed #4f82d6;
+    padding: 5px 15px;*/
+}
+
+.info .partOfSpeech {
+    color: #888;
+}
+
+.infoPlaceholder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.sense {
+    /*    border-left: 1px solid #eee;*/
+}
+
+.pronunciation {
+    display: inline-block;
+    margin-right: 5px;
+}

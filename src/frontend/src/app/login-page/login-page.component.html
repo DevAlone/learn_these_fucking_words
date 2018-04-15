@@ -1,0 +1,23 @@
+<div class="wrapper">
+  <form class="loginForm">
+    <div class="error" *ngIf="errorString">
+      Error: {{ errorString }}
+    </div>
+
+    <div class="form-field">
+      <label for="usernameInput">Username:</label>
+      <input [(ngModel)]="username" id="usernameInput" name="username" type="text" required>
+    </div>
+
+    <div class="form-field">
+      <label for="passwordInput">Password:</label>
+      <input [(ngModel)]="password" id="passwordInput" name="password" type="password" required>
+    </div>
+
+    <div class="form-buttons">
+      <button type="submit" class="button button-primary" (click)="login(); $event.preventDefault()">Login</button>
+    </div>
+  </form>
+</div>
+
+

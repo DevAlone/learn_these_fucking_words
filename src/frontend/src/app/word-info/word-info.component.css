@@ -1,0 +1,33 @@
+.imagesBlock {
+    margin: 10px 0;
+    width: 100%;
+    height: 200px;
+    overflow-x: auto;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: stretch;
+}
+
+.imagesBlock img {
+    height: 100%;
+    margin-right: 10px;
+}
+
+.imagesPlaceholder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+iframe {
+    display: block;
+    width: 100%;
+    min-height: 10000px;
+}

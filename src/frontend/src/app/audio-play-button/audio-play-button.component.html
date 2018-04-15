@@ -1,0 +1,4 @@
+<button mat-icon-button color="warn" (click)="toggle()" [title]="title">
+    <mat-icon *ngIf="!isPlaying">play_arrow</mat-icon>
+    <mat-icon *ngIf="isPlaying">stop_arrow</mat-icon>
+</button>

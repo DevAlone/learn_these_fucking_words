@@ -1,0 +1,50 @@
+.wrapper {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.wrapper div {
+  margin: 10px 0;
+}
+
+.error {
+  /*margin: 10px 0;*/
+  background: #ff5f56;
+  padding: 5px;
+}
+
+form {
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*flex-wrap: wrap;*/
+  /*justify-content: center;*/
+  /*align-items: stretch;*/
+  /*align-content: stretch;*/
+}
+
+button {
+  width: 100%;
+}
+
+h3 {
+  text-align: center;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+}
+
+.form-field > label {
+  padding-right: 10px;
+}

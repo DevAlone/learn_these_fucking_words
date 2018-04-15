@@ -1,0 +1,8 @@
+<span *ngIf="exampleData.text">{{ exampleData.text }}</span>
+<span *ngIf="exampleData.audio">
+<app-audio-play-button 
+    *ngFor="let exampleAudio of exampleData.audio" 
+    [url]="'https://api.pearson.com' + exampleAudio.url" 
+    [title]="'play'">
+</app-audio-play-button>
+</span>

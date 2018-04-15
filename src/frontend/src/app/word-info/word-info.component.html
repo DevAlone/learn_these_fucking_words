@@ -1,0 +1,19 @@
+<div class="imagesBlock" *ngIf="images">
+    <img *ngFor="let image of images" src="{{ image.previewURL }}">
+</div>
+<div class="imagesPlaceholder" *ngIf="!images">
+    <mat-spinner></mat-spinner>
+</div>
+<h3>some info about word:</h3>
+
+<mat-tab-group (selectedTabChange)="tabChanged($event)" #tabs>
+    <mat-tab label="pearson.com">
+        <app-word-info-pearson-com [word]="word"></app-word-info-pearson-com>
+    </mat-tab>
+    <mat-tab label="wikipedia">
+        <!-- consider using https://en.wikipedia.org/w/api.php?action=parse&format=json&page=chair -->
+        <iframe [src]="sanitizer.bypassSecurityTrustResourceUrl('https://en.wikipedia.org/wiki/' + this.word.word)" frameborder="0" #wikipediaFrame>
+            You have really old browser, it doesn 't support frames
+        </iframe>
+    </mat-tab>
+</mat-tab-group>

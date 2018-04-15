@@ -1,0 +1,25 @@
+#messages {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+}
+
+.content {
+    height: 100%;
+    overflow: auto;
+    padding: 10px;
+    flex-grow: 1;
+}
+
+.container {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: stretch;
+}
